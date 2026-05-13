@@ -1,0 +1,13 @@
+node_modules/
+.env
+dist/
+build/
+coverage/
+
+.prisma/
+generated/
+
+npm-debug.log
+
+.DS_Store
+Thumbs.db

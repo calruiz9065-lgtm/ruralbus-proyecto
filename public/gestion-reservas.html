@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Reservas - RuralBus PROYECTO</title>
+    <!-- Fuente y Íconos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Configuración de Tailwind y Fuentes */
+        :root {
+            --color-primary: #00796b; /* Verde oscuro primario (usado en botones, foco) */
+            --color-secondary: #c0392b; /* Rojo para limpiar/eliminar */
+            --color-accent: #006b5a; /* Verde para encabezados de tabla */
+            --color-header-bg: #004d40; /* Color de fondo solicitado para la cabecera */
+            --color-edit: #4a90e2; /* Azul para editar */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #2c3e50;
+        }
+
+        /* Estilo General de Contenedores */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .logo img {
+            height: 48px;
+        }
+        .main-content {
+            padding: 0 2rem 2rem 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* --- ESTILO PARA EL CONTENEDOR DE CABECERA (SOLICITADO: #004d40 y CENTRADO) --- */
+        .module-cabecera-especial {
+            background-color: var(--color-header-bg); /* #004d40 */
+            color: #fff; /* Texto blanco para alto contraste */
+            border-radius: 12px;
+            padding: 30px 24px;
+            margin-bottom: 24px;
+            text-align: center; /* Centrado solicitado */
+            box-shadow: 0 6px 15px rgba(0, 77, 64, 0.4);
+        }
+        .module-cabecera-especial h2 {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .module-cabecera-especial p {
+            color: #e0f2f1; /* Verde claro para el subtítulo */
+            font-size: 1.1rem;
+        }
+        /* ---------------------------------------------------------------- */
+
+
+        /* Tarjetas de Contenido BLANCO */
+        .content-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+
+        /* Formulario Grid */
+        .form-row { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 16px; 
+            align-items: end; 
+        }
+        .form-row > div:last-child {
+            grid-column: 1 / -1; 
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-top: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+        input, select { 
+            padding: 12px; 
+            border-radius: 8px; 
+            border: 1px solid #e5e7eb; 
+            width: 100%; 
+            box-sizing: border-box;
+            background-color: #f9fafb;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: var(--color-primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 121, 107, 0.1);
+        }
+
+        /* Botones de Acción Globales */
+        .btn-primary, .btn-secondary, .btn-volver {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+            white-space: nowrap;
+        }
+        .btn-primary { 
+            background: var(--color-primary); 
+            color: #fff; 
+        }
+        .btn-secondary { 
+            background: var(--color-secondary); 
+            color: #fff; 
+        }
+        .btn-volver {
+            background-color: #e0f2f1;
+            color: #004d40;
+            text-decoration: none;
+        }
+        .btn-primary:hover { background-color: #00695c; }
+        .btn-secondary:hover { background-color: #a93226; }
+
+        /* Estilos de Tabla (Ajustados para texto LINEAL y SCROLL HORIZONTAL) */
+        .data-table-container {
+            width: 100%;
+            overflow-x: auto; /* Mantiene el scroll horizontal para texto lineal */
+            -webkit-overflow-scrolling: touch;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+        .data-table th, .data-table td {
+            padding: 12px 14px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .data-table th {
+            background: var(--color-accent); /* Verde oscuro */
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-bottom: 4px solid #004d40;
+            text-transform: uppercase;
+        }
+        .data-table td {
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+            font-size: 0.9rem;
+            white-space: nowrap; /* ESTO FUERZA EL COMPORTAMIENTO LINEAL (no wrap) */
+        }
+        .data-table tbody tr:nth-child(even) { background: #f9f9f9; }
+        .data-table tbody tr:hover { background: #e8f5e9; cursor: default; }
+        
+        /* Botones de Tabla Compactos y Estilizados */
+        .btn-editar, .btn-eliminar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            line-height: 1;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn-editar { background: var(--color-edit); color: #fff; }
+        .btn-eliminar { background: var(--color-secondary); color: #fff; }
+        .btn-editar:hover, .btn-eliminar:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-editar i, .btn-eliminar i { margin-right: 4px; }
+
+        /* Responsive para Móvil */
+        @media (max-width: 768px) {
+            .dashboard-header, .main-content {
+                padding: 1rem;
+            }
+            .module-cabecera-especial h2 {
+                font-size: 1.5rem;
+            }
+            .module-cabecera-especial {
+                padding: 20px 16px;
+            }
+            .content-card {
+                padding: 16px;
+            }
+            .form-row {
+                grid-template-columns: 1fr; /* Una columna en móvil */
+            }
+            .form-row > div:last-child {
+                justify-content: center; /* Centrar botones de acción */
+            }
+            .data-table td, .data-table th {
+                padding: 10px 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* --- Estilos para el Modal de Alerta/Confirmación --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(-20px) scale(0.9);
+            opacity: 0;
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .modal-content h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+        }
+        .modal-content p {
+            margin-bottom: 20px;
+            color: #4b5563;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .modal-btn-confirm { background-color: var(--color-primary); color: white; }
+        .modal-btn-cancel { background-color: #ccc; color: #333; }
+        .modal-btn-confirm:hover { background-color: #00695c; }
+        .modal-btn-cancel:hover { background-color: #bbb; }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="logo">
+            <!-- Usando un placeholder simple o referencia local -->
+            <img src="logo.png.png" alt="RuralBus Logo" style="height:48px; border-radius: 8px;"> 
+        </div>
+        <a href="reservas.html" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver al Panel
+        </a>
+    </header>
+
+    <main class="main-content">
+        <!-- MÓDULO DE CABECERA SEPARADO CON ESTILO PERSONALIZADO (#004d40 y CENTRADO) -->
+        <section class="module-cabecera-especial">
+            <h2>📞 Gestión de Reservas y Llamadas 🎟️</h2>
+            <p>Aquí puedes crear, buscar y gestionar todas las reservas de pasajes. Organice sus viajes.</p>
+        </section>
+
+        <!-- FORMULARIO DE RESERVA (DENTRO DE UNA TARJETA BLANCA) -->
+        <section class="content-card">
+            <h3 class="text-xl font-bold mb-4 text-gray-700">Crear o Editar Reserva</h3>
+            <form id="crearReservaForm" class="form-row">
+                <div>
+                    <label for="nombre">Nombre del Pasajero:</label>
+                    <input type="text" id="nombre" required placeholder="Nombre completo" autocomplete="off">
+                </div>
+                <div>
+                    <label for="dni">DNI/ID:</label>
+                    <input type="text" id="dni" required placeholder="13 dígitos" autocomplete="off">
+                </div>
+                <div>
+                    <label for="ruta">Ruta:</label>
+                    <select id="ruta" required>
+                        <option value="">Seleccione una ruta</option>
+                        <!-- Se usa el texto para la lógica de precio, pero el valor se usa para el formulario -->
+                        <option value="Mercado Municipal de Jinotega - Ayapal, San José de Bocay">Mercado Municipal de Jinotega - Ayapal, San José de Bocay (C$ 150.00)</option>
+                        <option value="Managua - Granada">Managua - Granada (C$ 50.00)</option>
+                        <option value="Managua - Rio Blanco">Managua - Rio Blanco (C$ 120.00)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="fecha">Fecha de Viaje:</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div>
+                    <label for="asiento">Número de Asiento:</label>
+                    <input type="number" id="asiento" required min="1" max="99" placeholder="Ej: 12">
+                </div>
+
+                <div class="grid-actions">
+                    <button type="submit" class="btn-primary" id="guardarBtn">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                    <button type="button" id="limpiarCampos" class="btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpiar
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TABLA DE RESERVAS (DENTRO DE UNA TARJETA BLANCA) -->
+        <section class="content-card">
+            <h3 class="text-xl font-bold mb-3 text-gray-700">Reservas Activas</h3>
+            <div class="data-table-container">
+                <table class="data-table" aria-label="Reservas activas">
+                    <thead>
+                        <tr>
+                            <th>EDITAR</th>
+                            <th>DNI</th>
+                            <th>PASAJERO</th>
+                            <th>RUTA</th>
+                            <th>FECHA</th>
+                            <th>ASIENTO</th>
+                            <th>PRECIO</th>
+                            <th>ELIMINAR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservasTableBody">
+                        <!-- Filas de ejemplo con la estructura corregida y completa -->
+                        <tr>
+                            <td><button class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
+                            <td>0001234567890</td>
+                            <td>Cristopher López</td>
+                            <td>Managua - Granada</td>
+                            <td>2025-11-08</td>
+                            <td>7</td>
+                            <td>C$ 50.00</td>
+                            <td><button class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
+                            <td>0009876543210</td>
+                            <td>Pedro González</td>
+                            <td>Mercado Municipal de Jinotega - Ayapal, San José de Bocay</td>
+                            <td>2025-09-30</td>
+                            <td>8</td>
+                            <td>C$ 150.00</td>
+                            <td><button class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Alerta/Confirmación -->
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <h4 id="modalTitle">Mensaje</h4>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm" style="display: none;">Confirmar</button>
+                <button id="modalAlertBtn" class="modal-btn modal-btn-confirm">Aceptar</button>
+                <button id="modalCancelBtn" class="modal-btn modal-btn-cancel" style="display: none;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Modal Control Functions (Replaces alert/confirm) ---
+        function showModal(title, message, isConfirm = false, onConfirm = () => {}, onCancel = () => {}) {
+            const modal = document.getElementById('customModal');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+            const alertBtn = document.getElementById('modalAlertBtn');
+
+            if (isConfirm) {
+                alertBtn.style.display = 'none';
+                confirmBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
+                
+                confirmBtn.onclick = () => { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); onConfirm(); };
+                cancelBtn.onclick = () => { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); onCancel(); };
+            } else {
+                alertBtn.style.display = 'inline-block';
+                confirmBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+                alertBtn.onclick = () => { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); };
+            }
+            modal.classList.add('show');
+        }
+
+        // --- Lógica del CRUD y Helpers ---
+
+        // Precio por ruta (normalizando texto para evitar errores por mayúsculas/minúsculas)
+        function obtenerPrecio(ruta) {
+            const r = String(ruta).toLowerCase().trim();
+            if (r.includes('jinotega - ayapal')) return 150.00;
+            if (r.includes('managua - granada')) return 50.00;
+            if (r.includes('managua - rio blanco')) return 120.00;
+            return 0;
+        }
+
+        // Capitalización de texto: primera letra mayúscula de cada palabra
+        function capitalizarTexto(texto) {
+            return String(texto)
+                .trim()
+                .toLowerCase()
+                .split(/\s+/) // Separar por uno o más espacios
+                .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+                .join(' ');
+        }
+
+        /* ELEMENTOS Y ESTADO */
+        const form = document.getElementById('crearReservaForm');
+        const tbody = document.getElementById('reservasTableBody');
+        const guardarBtn = document.getElementById('guardarBtn');
+        const dniInput = document.getElementById('dni');
+        const nombreInput = document.getElementById('nombre');
+        const rutaSelect = document.getElementById('ruta');
+        const fechaInput = document.getElementById('fecha');
+        const asientoInput = document.getElementById('asiento');
+        
+        let filaEnEdicion = null; // Guarda la referencia a la <tr> que se está editando
+
+        /* Manejo de Evento Submit del Formulario */
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let nombre = nombreInput.value.trim();
+            const dni = dniInput.value.trim();
+            const ruta = rutaSelect.value.trim();
+            const fecha = fechaInput.value;
+            const asiento = asientoInput.value.trim();
+
+            // VALIDACIONES
+            if (!/^\d{13}$/.test(dni)) { 
+                showModal('Error de DNI', 'El DNI debe contener exactamente 13 dígitos.'); 
+                return; 
+            }
+            if (!/^\d+$/.test(asiento) || parseInt(asiento) < 1 || parseInt(asiento) > 99) { 
+                showModal('Error de Asiento', 'El número de asiento debe estar entre 1 y 99.'); 
+                return; 
+            }
+
+            // Verificar asiento duplicado en misma ruta+fecha
+            const rutaBuscada = ruta.toLowerCase().trim();
+            const asientosOcupadosMismaFecha = Array.from(tbody.querySelectorAll('tr'))
+                .filter(tr => tr !== filaEnEdicion) // Excluir la fila que se está editando
+                .filter(tr => {
+                    // Índices de columna: [0: EDITAR, 1: DNI, 2: PASAJERO, 3: RUTA, 4: FECHA, 5: ASIENTO, 6: PRECIO, 7: ELIMINAR]
+                    const rutaExistente = (tr.cells[3]?.textContent || '').trim().toLowerCase();
+                    const fechaExistente = (tr.cells[4]?.textContent || '').trim();
+                    // Usamos el texto de la opción seleccionada para la verificación de duplicados de asiento
+                    const selectedOptionText = rutaSelect.options[rutaSelect.selectedIndex].text.split('(')[0].trim().toLowerCase();
+                    return rutaExistente === selectedOptionText && fechaExistente === fecha;
+                })
+                .map(tr => (tr.cells[5] ? tr.cells[5].textContent.trim() : ''));
+
+            if (asientosOcupadosMismaFecha.includes(asiento)) {
+                showModal('Asiento Ocupado', `El asiento ${asiento} ya está ocupado para esa ruta y fecha.`); 
+                return;
+            }
+
+            // Normalizar datos
+            nombre = capitalizarTexto(nombre);
+            // La rutaNorm es el texto visible de la opción (sin precio)
+            const selectedOption = rutaSelect.options[rutaSelect.selectedIndex];
+            const rutaNorm = selectedOption ? selectedOption.text.split('(')[0].trim() : capitalizarTexto(ruta);
+            const precio = obtenerPrecio(ruta);
+
+            if (filaEnEdicion) {
+                // Modo Edición: Actualizar fila existente
+                filaEnEdicion.cells[1].textContent = dni;
+                filaEnEdicion.cells[2].textContent = nombre;
+                filaEnEdicion.cells[3].textContent = rutaNorm;
+                filaEnEdicion.cells[4].textContent = fecha;
+                filaEnEdicion.cells[5].textContent = asiento;
+                filaEnEdicion.cells[6].textContent = `C$ ${precio.toFixed(2)}`;
+
+                filaEnEdicion = null; // Finalizar edición
+                guardarBtn.innerHTML = '<i class="fas fa-save"></i> Guardar';
+                showModal('Actualización Exitosa', 'Reserva actualizada correctamente.');
+            } else {
+                // Modo Creación: Crear nueva fila
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.innerHTML = `
+                    <td><button class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
+                    <td>${dni}</td>
+                    <td>${nombre}</td>
+                    <td>${rutaNorm}</td>
+                    <td>${fecha}</td>
+                    <td>${asiento}</td>
+                    <td>C$ ${precio.toFixed(2)}</td>
+                    <td><button class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                `;
+                tbody.appendChild(nuevaFila);
+                showModal('Creación Exitosa', 'Reserva creada correctamente.');
+            }
+
+            form.reset(); // Limpiar formulario
+        });
+
+        /* Delegación: Manejo de editar / eliminar en la tabla */
+        tbody.addEventListener('click', function(e) {
+            const tr = e.target.closest('tr');
+            if (!tr) return;
+
+            // Eliminar
+            if (e.target.classList.contains('btn-eliminar') || e.target.closest('.btn-eliminar')) {
+                showModal(
+                    'Confirmar Eliminación',
+                    '¿Deseas eliminar esta reserva de forma permanente?',
+                    true,
+                    () => { tr.remove(); showModal('Eliminado', 'La reserva ha sido eliminada.'); },
+                    () => {} // Cancelar no hace nada
+                );
+                return;
+            }
+
+            // Editar
+            if (e.target.classList.contains('btn-editar') || e.target.closest('.btn-editar')) {
+                filaEnEdicion = tr;
+
+                // Rellenar formulario (índices fijos según THEAD)
+                dniInput.value = tr.cells[1].textContent.trim();
+                nombreInput.value = tr.cells[2].textContent.trim();
+                
+                // Intentar seleccionar la ruta:
+                const rutaValor = tr.cells[3].textContent.trim(); // Texto visible de la ruta (sin precio)
+                let foundMatch = false;
+                for (let i = 0; i < rutaSelect.options.length; i++) {
+                    const optionText = rutaSelect.options[i].text.split('(')[0].trim();
+                    // Buscar coincidencia exacta en el texto de la opción
+                    if (optionText === rutaValor) {
+                        rutaSelect.selectedIndex = i;
+                        foundMatch = true;
+                        break;
+                    }
+                }
+                if (!foundMatch) rutaSelect.selectedIndex = 0; // Seleccionar el placeholder si no hay match
+                
+                fechaInput.value = tr.cells[4].textContent.trim();
+                asientoInput.value = tr.cells[5].textContent.trim();
+                
+                guardarBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Actualizar Reserva';
+                showModal('Modo Edición', 'Estás editando la reserva seleccionada. Modifica los campos y haz clic en Actualizar.');
+            }
+        });
+
+        /* Botón Limpiar */
+        document.getElementById('limpiarCampos').addEventListener('click', function() {
+            form.reset();
+            filaEnEdicion = null;
+            guardarBtn.innerHTML = '<i class="fas fa-save"></i> Guardar';
+            showModal('Formulario Limpio', 'Campos de formulario restablecidos a modo "Crear Reserva".');
+        });
+
+    </script>
+</body>
+</html>

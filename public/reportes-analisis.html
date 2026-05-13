@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes y Análisis - RuralBus PROYECTO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="logo">
+            <img src="logo.png.png" alt="RuralBus Logo"> 
+        </div>
+        
+        <a href="reservas.html" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver al Panel
+        </a>
+    </header>
+
+    <main class="main-content">
+        <section class="module-header">
+            <h2>📈 Informes y Análisis Financiero 💰</h2>
+            <p>Consolidado de ingresos, ventas y métricas clave (📊) para la toma de decisiones. 💡</p>
+        </section>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <i class="fas fa-money-bill-wave" style="font-size: 2.5em; color: var(--color-primary-dark);"></i>
+                <h3>Ingresos Totales (Simulado)</h3>
+                <p class="metric-value">C$15,250.00</p>
+                <p class="metric-description">Total acumulado según reservas activas.</p>
+            </div>
+
+            <div class="metric-card">
+                <i class="fas fa-check-circle" style="font-size: 2.5em; color: var(--color-primary-dark);"></i>
+                <h3>Viajes Completados</h3>
+                <p class="metric-value">124</p>
+                <p class="metric-description">Número de viajes finalizados (simulado).</p>
+            </div>
+        </div>
+
+        <section class="content-card" style="margin-top: 30px;">
+            <h3>Detalle Financiero por Ruta</h3>
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>RUTA</th>
+                            <th>BOLETOS VENDIDOS</th>
+                            <th>INGRESOS NETOS</th>
+                            <th>OCUPACIÓN PROMEDIO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MANAGUA - MASAYA</td>
+                            <td>850</td>
+                            <td>C$21,250.00</td>
+                            <td>72%</td>
+                        </tr>
+                        <tr>
+                            <td>MANAGUA - GRANADA</td>
+                            <td>620</td>
+                            <td>C$27,900.00</td>
+                            <td>65%</td>
+                        </tr>
+                        <tr>
+                            <td>MANAGUA - RIO BLANCO</td>
+                            <td>310</td>
+                            <td>C$37,200.00</td>
+                            <td>78%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 RuralBus.Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const usuarioActivo = localStorage.getItem('usuarioActivo');
+        const perfilNombre = document.querySelector('.perfil-nombre');
+
+        // 1. RESTRICCIÓN DE ACCESO INMEDIATA (La guardia de la página)
+        // Si NO hay usuario activo, redirige a index.html y ELIMINA esta página del historial.
+        if (!usuarioActivo) {
+            // **CLAVE:** usa replace() para que el botón de retroceso no pueda volver a esta página.
+            window.location.replace("index.html");
+            return; // Detiene la ejecución del resto del script.
+        }
+
+        // --- Resto de la lógica (Solo se ejecuta si hay usuarioActivo) ---
+
+        // 2. CONFIGURACIÓN DEL NOMBRE
+        if (perfilNombre) {
+            perfilNombre.textContent = usuarioActivo.toUpperCase();
+        }
+
+        // 3. CIERRE DE SESIÓN (Logout)
+        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('usuarioActivo');
+            // **CLAVE:** usa replace() para que el botón de retroceso no pueda volver aquí.
+            window.location.replace('index.html'); 
+        });
+
+        // 4. LÓGICA DEL TOGGLE DEL MENÚ (Se mantiene)
+        const profileToggle = document.getElementById("profileToggle");
+        const profileMenu = document.getElementById("profileMenu"); 
+        
+        if (profileToggle && profileMenu) {
+            profileToggle.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                profileMenu.classList.toggle("show");
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!profileMenu.contains(e.target)) {
+                    profileMenu.classList.remove("show");
+                }
+            });
+        }
+    });
+</script>

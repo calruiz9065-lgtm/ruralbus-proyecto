@@ -1,0 +1,1312 @@
+/* ======================================= */
+/* 1. CONFIGURACIÓN GLOBAL Y RESET */
+/* ======================================= */
+:root {
+    /* Variables del Tema Principal (Green/Teal) */
+    --color-primary-dark: #004d40;    /* Verde Oscuro (Acentos, Títulos) */
+    --color-primary-medium: #00796b;  /* Verde Medio (Main Accent, Botones) */
+    --color-primary-light: #e0f2f1;   /* Verde Claro (Fondo suave, Hover) */
+    
+    /* Alias de uso frecuente */
+    --color-primary: var(--color-primary-medium);
+    
+    /* Colores Secundarios y de Alerta */
+    --color-secondary-red: #d32f2f;     /* Rojo (Error/Eliminar) */
+    --color-secondary-orange: #fb8c00;  /* Naranja (Acento secundario/Íconos) */
+    --color-secondary: #6c757d;         /* Gris para textos secundarios/íconos */
+
+    /* Colores de Fondo y Texto */
+    --color-background: #f0f4f8;        /* Gris Claro general */
+    --color-background-card: #ffffff;   /* Blanco para tarjetas */
+    --color-text-dark: #212121;
+    --color-text-light: #ffffff;
+
+    /* Bordes y Sombras */
+    --color-border-default: #ccc;
+    --color-border-light: #e0e0e0;      /* Para divisores y hover suave */
+    --shadow-light: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.2);
+    
+    /* Radios de Borde */
+    --border-radius-large: 12px;
+    --border-radius-default: 8px; 
+    
+    /* Tipografía */
+    --font-family-sans: 'Open Sans', 'Arial', sans-serif;
+    
+    /* Variables de color para tarjetas modulares (usadas en el Dashboard) */
+    --card-bg-default: var(--color-background-card); 
+    --card-bg-orange: #fff3e0;
+    --card-bg-blue: #e3f2fd;
+    --card-bg-yellow: #fffde7;
+    --card-bg-green: #e8f5e9;
+    --card-bg-purple: #f3e5f5;
+}
+
+/* Importar una fuente de Google Fonts (si ya está en el HTML, puedes ignorar esta línea) */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+/* Reset Universal */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-sans);
+    background: linear-gradient(to bottom, #e6f0ea, #ffffff);
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.3;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+}
+
+/* Enlaces base */
+a {
+    text-decoration: none;
+    color: var(--color-primary);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+/* ======================================= */
+/* 2. PÁGINAS DE ACCESO (LOGIN & REGISTRO) */
+/* ======================================= */
+
+.login-page, .registro-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Imagen de fondo con blur para Login */
+.login-page::before,.registro-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('https://plus.unsplash.com/premium_photo-1661963542752-9a8a1d72fb28?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(4px);
+    z-index: -1; 
+    transform: scale(1.1); 
+}
+
+/* Contenedor y Tarjeta Común */
+.login-container, .registro-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card, .registro-card {
+    background-color: var(--color-background-card);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-medium);
+    padding: 30px 25px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.login-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.login-header, .registro-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.login-logo {
+    width: 300px; /* Asumiendo que es una imagen */
+    margin-bottom: 10px;
+}
+
+.login-header h2, .registro-header h2 {
+    font-size: 24px;
+    color: var(--color-primary-dark); /* Usando el verde oscuro del tema */
+    margin-bottom: 5px;
+}
+
+.login-header p, .registro-header p {
+    font-size: 14px;
+    color: var(--color-secondary);
+}
+
+/* --- Grupos de Entrada --- */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    font-size: 0.9rem; /* Ajustado para Registro/Login */
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--border-radius-default);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+    outline: none;
+}
+
+/* --- Botón de Login/Registro --- */
+.btn-login, .btn-registro {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-primary); /* Usando el color principal */
+    border: none;
+    border-radius: var(--border-radius-default);
+    color: var(--color-text-light);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login:hover, .btn-registro:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Estado deshabilitado (para Registro) */
+.btn-registro:disabled {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+}
+
+/* --- Alternar Contraseña (Ojo) --- */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 40px !important; /* Asegura espacio para el botón */
+}
+
+.toggle-password {
+    position: absolute;
+ right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0;
+    line-height: 1;
+    color: var(--color-text-dark); /* Color del icono */
+    transition: opacity 0.2s;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* Nota: Los estilos del ojo (::before, ::after) son complejos y se recomienda usar íconos de librería (como FontAwesome) */
+/* He quitado los estilos complejos del ojo y recomiendo usar una fuente de íconos o SVG simple */
+
+
+/* --- Footer de Login/Registro --- */
+.login-footer, .registro-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid var(--color-border-light);
+    font-size: 0.9rem;
+}
+
+.btn-create-account {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 16px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--border-radius-default);
+    color: var(--color-primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+}
+
+.btn-create-account:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+
+/* ======================================= */
+/* 3. DISEÑO DEL ENCABEZADO (HEADER) */
+/* ======================================= */
+
+.dashboard-header {
+    background-color: var(--color-background-card);
+    color: var(--color-text-dark); /* El texto del header debe ser oscuro para contrastar con el fondo blanco */
+    padding: 25px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-light);
+}
+
+.dashboard-header .logo {
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-header .logo img {
+    height: 60px; /* Ajustado para un header más compacto */
+    width: auto;
+    margin-right: 15px;
+    opacity: 0.9;
+}
+
+.dashboard-header .logo p {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+/* --- Botón Volver al Panel --- */
+.btn-volver {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border: none;
+    padding: 12px 15px; /* Ajustado */
+    cursor: pointer;
+    border-radius: var(--border-radius-default);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.0em;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.btn-volver i {
+    margin-right: 20px;
+
+}
+
+.btn-volver:hover {
+    background-color: #b2dfdb;
+}
+
+/* ======================================= */
+/* 4. MENÚ DESPLEGABLE DE PERFIL */
+/* ======================================= */
+
+.profile-dropdown {
+    position: relative;
+    /* Asegura que el nombre sea visible */
+    color: var(--color-text-dark); 
+}
+
+.btn-profile {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px; 
+    border-radius: 20px; 
+    transition: background-color 0.3s;
+}
+
+.btn-profile:hover {
+    background-color: var(--color-border-light); 
+}
+
+.profile-avatar {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-primary-light); 
+}
+
+.perfil-nombre {
+    font-weight: bold;
+    color: var(--color-primary-dark);
+    font-size: 1em;
+}
+
+.fa-caret-down {
+    color: var(--color-primary);
+    transition: transform 0.3s;
+}
+
+/* El contenido que aparece al hacer clic */
+.profile-dropdown-content {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--card-bg-default); 
+    min-width: 180px;
+    box-shadow: var(--shadow-medium); 
+    border-radius: var(--border-radius-default);
+    z-index: 100;
+    padding: 10px 0;
+    
+    /* ESTADOS INICIALES (Escondido) */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+/* ESTADO ACTIVO: La clase 'show' se añade por JavaScript */
+.profile-dropdown.show .profile-dropdown-content {
+    opacity: 1; /* Corregido de 2 a 1 */
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Icono de flecha girando */
+.profile-dropdown.show .fa-caret-down {
+    transform: rotate(180deg);
+}
+
+.profile-dropdown-content a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: var(--color-text-dark);
+    text-decoration: none;
+    font-size: 0.95em;
+    width: 100%;
+}
+
+.profile-dropdown-content a:hover {
+    background-color: var(--color-border-light);
+}
+
+.profile-dropdown-content a i {
+    margin-right: 10px;
+    color: var(--color-primary); /* Usando color de acento */
+}
+
+.logout-link {
+    color: var(--color-secondary-red);
+}
+
+.logout-link:hover {
+    background-color: #ffebee; /* Rojo muy suave */
+}
+
+/* ======================================= */
+/* 5. CONTENIDO PRINCIPAL Y MÓDULOS */
+/* ======================================= */
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.module-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 25px;
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+}
+
+.module-header h2 {
+    font-size: 2.5em; /* Ajustado */
+    margin-bottom: 10px;
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
+.module-header p {
+    font-size: 1.1em; /* Ajustado */
+    color: var(--color-text-light);
+    opacity: 0.85;
+}
+
+.content-card {
+    background-color: var(--color-background-card);
+    padding: 40px;
+    margin-bottom: 30px;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+}
+
+.content-card h3 {
+    color: var(--color-primary-dark);
+    border-bottom: 2px solid var(--color-primary-light);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+/* ======================================= */
+/* 6. GRID DE MÓDULOS (Dashboard) */
+/* ======================================= */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+}
+
+.metric-card {
+    text-align: center;
+    background-color: var(--color-background-card);
+    padding: 35px;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* Para enlaces */
+    text-decoration: none; 
+    color: var(--color-text-dark); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+}
+
+.metric-card h3 {
+    font-size: 1.6em;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: var(--color-primary-dark); 
+    border-bottom: none; /* Quitamos la línea de h3 en tarjetas */
+}
+
+.metric-card p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+.metric-value {
+    font-size: 4em;
+    font-weight: bold;
+    color: var(--color-primary-medium);
+    margin: 15px 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.metric-label {
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* Estilo del Ícono */
+.metric-card i {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+/* Colores de Íconos Específicos */
+.module-icon-reservas { color: var(--color-secondary-orange); } 
+.module-icon-boletos { color: #0088ff; } 
+.module-icon-capacidad { color: #ffc800; } 
+.module-icon-reportes { color: var(--color-secondary-red); } 
+.module-icon-pagos { color: var(--color-primary); } 
+
+/* VARIACIONES DE COLOR PARA TARJETAS */
+.metric-card.color-light-orange { background-color: var(--card-bg-orange); }
+.metric-card.color-light-blue { background-color: var(--card-bg-blue); }
+.metric-card.color-light-yellow { background-color: var(--card-bg-yellow); }
+.metric-card.color-light-green { background-color: var(--card-bg-green); }
+.metric-card.color-light-purple { background-color: var(--card-bg-purple); }
+
+/* Ajuste de Posición para Elementos Centrados en Grid */
+.grid-center-item {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.grid-center-item .module-link {
+    max-width: 300px;
+    width: 100%;
+}
+
+
+/* ======================================= */
+/* 7. FORMULARIOS Y BOTONES (General) */
+/* ======================================= */
+
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.grid-form label {
+    font-weight: 600;
+    font-size: 1.0em; /* Ajustado para consistencia */
+    margin-bottom: 8px;
+    display: block;
+    color: var(--color-text-dark);
+}
+
+.grid-form input[type="text"],
+.grid-form input[type="date"],
+.grid-form input[type="password"],
+.grid-form input[type="number"], /* Incluido */
+.grid-form select {
+    width: 100%;
+    padding: 14px; /* Ajustado de 18px */
+    border: 2px solid var(--color-primary-light);
+    border-radius: var(--border-radius-large);
+    font-size: 1.1em; /* Ajustado */
+    line-height: 1.5;
+    color: var(--color-text-dark);
+    background-color: #f9f9f9;
+}
+
+.grid-form input::placeholder {
+    color: #888;
+}
+
+/* El botón submit siempre abarca todo el ancho */
+.grid-form button[type="submit"] {
+    grid-column: 1 / -1;
+    width: auto; /* Permite que el estilo general de botón maneje el ancho */
+}
+
+/* --- BOTONES PRIMARIOS (General) --- */
+.btn-primary,
+.btn-secondary,
+button[type="submit"] {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    padding: 15px 30px; /* Ajustado */
+    cursor: pointer;
+    border-radius: var(--border-radius-large);
+    font-size: 1.1em; /* Ajustado */
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover unificado para todos */
+.btn-primary:hover,
+.btn-secondary:hover,
+button[type="submit"]:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.full-width-btn {
+    width: 100%;
+    margin-top: 25px;
+}
+
+/* --- Estilo para formularios de búsqueda --- */
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.search-form input {
+    flex-grow: 1;
+    min-width: 250px;
+}
+
+.search-form button {
+    flex-shrink: 0;
+}
+
+/* --- Formulario de una sola columna (Pago Digital) --- */
+.payment-grid {
+    max-width: 550px;
+    margin: 40px auto 0 auto;
+    display: grid;
+    gap: 30px;
+}
+
+.grid-form-single {
+    display: grid;
+    gap: 15px;
+}
+
+.grid-form-single input[type="number"],
+.grid-form-single input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em; /* Corregido de '1' a '1em' */
+}
+
+/* Estilos de Tarjeta de Saldo/Recarga */
+.saldo-card h3,
+.recharge-card h3 {
+    font-size: 1.6em;
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--color-primary-light);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.saldo-card h3 i,
+.recharge-card h3 i {
+    font-size: 2.2em;
+    margin-bottom: 5px;
+}
+
+.balance-value {
+    font-size: 3.5em;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0 0 5px 0;
+    text-align: center;
+}
+
+.text-description {
+    font-size: 1.0em;
+    color: #777;
+    margin: 0;
+    text-align: center;
+}
+
+
+/* ======================================= */
+/* 8. TABLAS DE DATOS (ACCESIBLES) */
+/* ======================================= */
+
+.data-table-container {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: var(--border-radius-large);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.data-table th,
+.data-table td {
+    padding: 18px 25px; /* Ajustado */
+    font-size: 1.0em;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.data-table th {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table thead tr:first-child th:first-child {
+    border-top-left-radius: var(--border-radius-large);
+}
+
+.data-table thead tr:first-child th:last-child {
+    border-top-right-radius: var(--border-radius-large);
+}
+
+.data-table tr:nth-child(even) {
+    background-color: var(--color-border-light);
+}
+
+.data-table tr:hover {
+    background-color: #d8d8d8;
+}
+
+/* Estilo para el botón de eliminar dentro de la tabla */
+.data-table .btn-eliminar {
+    background-color: var(--color-secondary-red);
+    padding: 8px 15px; /* Ajustado */
+    font-size: 0.9em;
+    border-radius: var(--border-radius-default);
+    transition: background-color 0.3s ease;
+}
+
+.data-table .btn-eliminar:hover {
+    background-color: #a72323;
+}
+
+/* ======================================= */
+/* 9. PIE DE PÁGINA (FOOTER) */
+/* ======================================= */
+
+.main-footer {
+    background-color: var(--color-primary-medium); /* Usando el oscuro para el footer */
+    color: var(--color-text-light);
+    text-align: center;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    margin-top: auto; /* Lo empuja al final de la página */
+}
+
+.main-footer p {
+    margin: 0;
+}
+
+.social-links a {
+    margin-left: 15px;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.social-links img {
+    height: 25px;
+    width: 25px;
+    vertical-align: middle;
+}
+
+/* El footer genérico de la parte de registro */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    color: var(--color-text-dark); 
+    background-color: var(--color-background-card); 
+}
+
+/* ======================================= */
+/* 10. RESPONSIVE DESIGN */
+/* ======================================= */
+@media (max-width: 992px) {
+    .dashboard-header, .main-footer {
+        padding: 15px 20px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .grid-form {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 16px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .dashboard-header .logo img {
+        height: 50px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .module-header {
+        padding: 25px 15px;
+    }
+
+    .module-header h2 {
+        font-size: 1.8em;
+    }
+    
+    .content-card {
+        padding: 20px;
+    }
+
+    .main-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .social-links {
+        margin-top: 5px;
+    }
+}
+/* ------------------------------------------- */
+/* MODIFICACIONES PARA EL CAMPO DE CONTRASEÑA */
+/* ------------------------------------------- */
+
+/* 1. Nuevo Contenedor de Posicionamiento */
+.input-password-wrapper {
+    /* Es fundamental que el contenedor tenga posición relativa para que el botón se posicione adentro */
+    position: relative; 
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* 2. Aseguramos que el input deja espacio para el ícono */
+/* Si tu input ya tiene un estilo general, solo añade o ajusta el padding-right */
+.input-password-wrapper input#password {
+    width: 100%;
+    /* OJO: Deja espacio de 45px a la derecha para que no se oculte el ícono */
+    padding-right: 45px; 
+}
+
+/* 3. Estilo del Botón Toggle (formal y posicionado "adentro") */
+.toggle-password {
+    position: absolute; /* Permite posicionarlo dentro del wrapper */
+    right: 15px; /* Posicionamiento más adentro del campo (AJUSTA ESTE VALOR SI LO NECESITAS) */
+    top: 40%;
+    transform: translateY(-50%); /* Centra verticalmente */
+    
+    /* Estilo formal: sin fondo ni borde */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px; /* Hace el área táctil más grande */
+    
+    color: #6c757d; /* Color gris oscuro formal */
+    font-size: 1rem;
+    transition: color 0.2s, transform 0.2s;
+    z-index: 10;
+}
+
+.toggle-password:hover {
+    color: #007bff; /* Color azul al pasar el mouse para feedback */
+}
+
+/* (Añade el resto de tus estilos aquí) */
+/* ======================================= */
+/* 3. DISEÑO DEL ENCABEZADO (HEADER) CORREGIDO */
+/* ======================================= */
+
+
+/* --- Botón Volver al Panel (Estilo y Posición) --- */
+
+
+/* --- OCULTAR ELEMENTOS DE PERFIL (SOLO EN ESTE MÓDULO SI ES NECESARIO) --- */
+
+
+.data-table th,
+.data-table td {
+    padding: 18px 25px;
+    font-size: 1.0em;
+    text-align: left;
+    /* AÑADIR LÍNEAS SEPARADORAS: Borde derecho e inferior */
+    border-bottom: 1px solid var(--color-border-light);
+    border-right: 1px solid var(--color-border-light);
+    white-space: nowrap; /* Mantiene el contenido lineal */
+}
+
+/* Eliminar el borde derecho de la última columna */
+.data-table th:last-child,
+.data-table td:last-child {
+    border-right: none;
+}
+
+.data-table th {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Filas de la tabla (manteniendo el estilo alterno) */
+.data-table tr:nth-child(even) {
+    background-color: var(--color-border-light);
+}
+
+.data-table tr:hover {
+    background-color: #d8d8d8;
+}
+
+/* --- BOTONES DE ACCIÓN DE LA TABLA --- */
+
+/* Estilo para el botón de ELIMINAR dentro de la tabla */
+.data-table .btn-eliminar {
+    background-color: var(--color-secondary-red);
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border-radius: var(--border-radius-default);
+    transition: background-color 0.3s ease;
+    color : var(--color-text-light);
+}
+
+.data-table .btn-eliminar:hover {
+    background-color: #a72323;
+    
+}
+
+/* NUEVO: Estilo para el botón de EDITAR (AZUL) */
+.data-table .btn-editar {
+    background-color: #007bff; /* Azul primario */
+    color: var(--color-text-light);
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border-radius: var(--border-radius-default);
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.data-table .btn-editar:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+/* === FIX PARA QUE LAS TABLAS NO SE ROMPAN === */
+
+/* Los content-card NO deben ser flex cuando contienen tablas */
+.content-card.fix-table {
+    display: block !important;
+}
+
+/* Evita que flex controles afecten interior de tablas */
+.content-card.fix-table table {
+    width: 100%;
+    display: table;
+}
+
+/* Asegura que los botones no agranden filas */
+.content-card.fix-table button {
+    padding: 6px 10px !important;
+    height: auto !important;
+}
+
+/* Restablecer comportamiento natural de celdas */
+.content-card.fix-table td,
+.content-card.fix-table th {
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
+/* =========================
+   RESET Y VARIABLES
+========================= */
+:root {
+    --color-primary-dark: #004d40;
+    --color-primary: #00796b;
+    --color-primary-light: #e0f2f1;
+    --color-secondary-red: #e74c3c;
+    --color-background: #f0f4f8;
+    --color-background-card: #fff;
+    --color-text-dark: #222;
+    --color-text-light: #fff;
+    --border-radius: 12px;
+    --shadow-light: 0 6px 18px rgba(0,0,0,0.06);
+    --shadow-medium: 0 8px 20px rgba(0,0,0,0.2);
+    --font-family: 'Open Sans', Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background: linear-gradient(to bottom, #e6f0ea, #ffffff);
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* =========================
+   HEADER
+========================= */
+.dashboard-header {
+    background: var(--color-background-card);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-light);
+    flex-wrap: wrap;
+}
+
+.dashboard-header .logo img {
+    height: 52px;
+}
+
+.btn-volver {
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.btn-volver i {
+    margin-right: 8px;
+}
+
+.btn-volver:hover {
+    background: #b2dfdb;
+}
+
+/* =========================
+   MAIN CONTENT & MODULE HEADER
+========================= */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 15px;
+}
+
+.module-header {
+    text-align: center;
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    margin-bottom: 25px;
+}
+
+.module-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.module-header p {
+    font-size: 1rem;
+    opacity: 0.85;
+}
+
+/* =========================
+   CONTENT CARD (Form & Table)
+========================= */
+.content-card {
+    background: var(--color-background-card);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+}
+
+.content-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--color-primary-dark);
+    border-bottom: 2px solid var(--color-primary-light);
+    padding-bottom: 10px;
+}
+
+/* =========================
+   FORMULARIOS
+========================= */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.form-row label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+}
+
+.grid-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: var(--color-secondary-red);
+    color: var(--color-text-light);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =========================
+   TABLA DE RESERVAS
+========================= */
+.table-iso {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    min-width: 600px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.data-table th {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.data-table tbody tr:hover {
+    background: #f0f5f5;
+}
+
+/* Botones en tabla */
+.btn-editar, .btn-eliminar {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-editar { background: #007bff; color: #fff; }
+.btn-editar:hover { background: #0056b3; }
+
+.btn-eliminar { background: var(--color-secondary-red); color: #fff; }
+.btn-eliminar:hover { background: #a72323; }
+
+/* Ajustes para columnas específicas */
+.data-table td:nth-child(4),
+.data-table th:nth-child(4) {
+    white-space: normal;
+    max-width: 400px;
+    word-break: break-word;
+}
+
+.data-table td:nth-child(2),
+.data-table td:nth-child(6),
+.data-table td:nth-child(7) {
+    white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    .data-table th,
+    .data-table td {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+    .data-table td:nth-child(4),
+    .data-table th:nth-child(4) { max-width: 250px; }
+}
+
+/* =========================
+   GENERAL BUTTON HOVER
+========================= */
+button:hover {
+    opacity: 0.95;
+}
+
+/* =========================
+   BODY & FOOTER
+========================= */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-footer {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    text-align: center;
+    padding: 15px 10px;
+    margin-top: auto;
+}
