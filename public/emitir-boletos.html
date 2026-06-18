@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emitir Boletos Electrónicos - RuralBus PROYECTO</title>
+    <title>Emitir Boletos Electrónicos - RuralBus</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
     <header class="dashboard-header">
-        <div class="logo">
-            <img src="logo.png.png" alt="RuralBus Logo"> 
-        
+        <div class="header-left">
+            <img src="logo.png.png" alt="RuralBus" class="header-logo">
         </div>
         <a href="reservas.html" class="btn-volver">
             <i class="fas fa-arrow-left"></i> Volver al Panel
         </a>
     </header>
 
-    <main class="main-content">
+    <main class="main-content" style="flex: 1;">
         <section class="module-header">
             <h2>Emitir Boletos Electrónicos</h2>
             <p>Genera y gestiona los boletos con código QR para sus pasajeros.</p>
@@ -28,119 +27,121 @@
 
         <section class="content-card">
             <h3>Buscar Reserva y Emitir Boleto</h3>
-            <form id="buscarReservaForm" class="form-card search-form">
-                <input type="text" id="reservaIdInput" >
+            <form id="buscarReservaForm" class="search-form">
+                <input type="text" id="reservaIdInput" placeholder="Ingrese DNI o ID de reserva" required>
                 <button type="submit" class="btn-primary">Buscar Reserva</button>
             </form>
             
-            <div id="boletoOutput" class="boleto-output" style="margin-top: 20px; display: none;">
-                <h4>Detalles del Boleto:</h4>
+            <div id="boletoOutput" style="display: none; margin-top: 20px;">
+                <h4>Boleto Electrónico</h4>
                 <p id="pasajeroInfo">Pasajero: </p>
+                <p id="dniInfo">DNI: </p>
                 <p id="rutaInfo">Ruta: </p>
-                <div id="qrcode" style="width:120px; height:120px; margin-top:10px;"></div>
-                <p style="margin-top:10px; font-weight: bold;">Boleto Válido</p>
+                <p id="asientoInfo">Asiento: </p>
+                <p id="caducidadInfo">Caducidad del boleto: </p>
+                <p id="companiaInfo">Compañía: RuralBus</p>
+                <div id="qrContainer" style="margin-top: 15px; text-align: center;"></div>
+                <p style="margin-top: 10px; font-size: 0.85rem;">Escanea el QR para ver el comprobante</p>
             </div>
-
-            <p id="errorMensaje" style="color: red; display: none; margin-top: 10px;">Reserva no encontrada.</p>
+            <p id="errorMensaje" style="color: red; display: none; margin-top: 10px;"></p>
         </section>
     </main>
 
-    <footer>
-        <p>© 2025 RuralBus.Todos los derechos reservados.</p>
+    <footer class="emitir-footer">
+        <p>© 2025 RuralBus. Todos los derechos reservados.</p>
     </footer>
 
     <script>
-        // Simulando reservas existentes
-        const reservas = [
-            { id: "0001234567890", nombre: "Cristopher López", ruta: "MANAGUA - GRANADA" },
-            { id: "0009876543210", nombre: "Pedro González", ruta: "MANAGUA - RIO BLANCO" },
-             
-        ];
-
-        // Función para generar un código aleatorio tipo QR
-        function generarCodigoQR() {
-            return "BOLETO-" + Math.floor(1000 + Math.random() * 9000); // BOLETO-1234
-        }
-
-        document.getElementById("buscarReservaForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const inputId = document.getElementById("reservaIdInput").value.trim().toUpperCase();
-            const reserva = reservas.find(r => r.id === inputId);
-
-            const boletoOutput = document.getElementById("boletoOutput");
-            const errorMensaje = document.getElementById("errorMensaje");
-            const qrContainer = document.getElementById("qrcode");
-
-            // Limpiar QR anterior
-            qrContainer.innerHTML = "";
-
-            if (reserva) {
-                // Mostrar datos
-                document.getElementById("pasajeroInfo").textContent = `Pasajero: ${reserva.nombre}`;
-                document.getElementById("rutaInfo").textContent = `Ruta: ${reserva.ruta}`;
-
-                // Generar y mostrar QR
-                const codigoQR = generarCodigoQR();
-                new QRCode(qrContainer, {
-                    text: codigoQR,
-                    width: 120,
-                    height: 120
-                });
-
-                boletoOutput.style.display = "block";
-                errorMensaje.style.display = "none";
-            } else {
-                boletoOutput.style.display = "none";
-                errorMensaje.style.display = "block";
+        (function() {
+            const STORAGE_KEY = 'gestionReservas';
+            
+            function loadReservas() {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return [];
+                try {
+                    const parsed = JSON.parse(raw);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch(e) {
+                    return [];
+                }
             }
-        });
+            
+            function buscarReserva(termino) {
+                const reservas = loadReservas();
+                const terminoLower = String(termino).trim().toLowerCase();
+                return reservas.find(r => 
+                    String(r.dni).toLowerCase() === terminoLower ||
+                    String(r.nombre).toLowerCase().includes(terminoLower)
+                );
+            }
+            
+            function generarNumeroFactura() {
+                return `FB-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            }
+            
+            function guardarBoleto(nombre, dni, ruta, asiento, precio) {
+                const invoiceNumber = generarNumeroFactura();
+                const invoice = {
+                    invoiceNumber, passenger: nombre, dni, route: ruta,
+                    company: 'RuralBus', seat: asiento, price: precio,
+                    taxAmount: +(precio * 0.13).toFixed(2),
+                    total: +(precio * 1.13).toFixed(2),
+                    issueDate: new Date().toLocaleString('es-NI'),
+                    expiryDate: new Date(Date.now() + 86400000).toLocaleString('es-NI')
+                };
+                localStorage.setItem(invoiceNumber, JSON.stringify(invoice));
+                localStorage.setItem(dni, JSON.stringify(invoice));
+                return invoiceNumber;
+            }
+            
+            document.getElementById('buscarReservaForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const inputId = document.getElementById('reservaIdInput').value.trim();
+                const boletoOutput = document.getElementById('boletoOutput');
+                const errorMensaje = document.getElementById('errorMensaje');
+                
+                if (!inputId) {
+                    errorMensaje.textContent = 'Ingrese un DNI o ID de reserva.';
+                    errorMensaje.style.display = 'block';
+                    boletoOutput.style.display = 'none';
+                    return;
+                }
+                
+                const reserva = buscarReserva(inputId);
+                if (!reserva) {
+                    errorMensaje.textContent = 'Reserva no encontrada. Verifique el DNI.';
+                    errorMensaje.style.display = 'block';
+                    boletoOutput.style.display = 'none';
+                    return;
+                }
+                
+                errorMensaje.style.display = 'none';
+                
+                document.getElementById('pasajeroInfo').innerHTML = `<strong>Pasajero:</strong> ${reserva.nombre}`;
+                document.getElementById('dniInfo').innerHTML = `<strong>DNI:</strong> ${reserva.dni}`;
+                document.getElementById('rutaInfo').innerHTML = `<strong>Ruta:</strong> ${reserva.ruta}`;
+                document.getElementById('asientoInfo').innerHTML = `<strong>Asiento:</strong> ${reserva.asiento}`;
+                
+                const expiryDate = new Date(Date.now() + 86400000).toLocaleString('es-NI');
+                document.getElementById('caducidadInfo').innerHTML = `<strong>Caducidad:</strong> ${expiryDate}`;
+                document.getElementById('companiaInfo').innerHTML = `<strong>Compañía:</strong> RuralBus`;
+                
+                const precioMatch = reserva.precio || 0;
+                const invoiceNumber = guardarBoleto(reserva.nombre, reserva.dni, reserva.ruta, reserva.asiento, precioMatch);
+                
+                const qrContainer = document.getElementById('qrContainer');
+                qrContainer.innerHTML = '';
+                const facturaUrl = `${window.location.origin}${window.location.pathname.replace('emitir-boletos.html', 'factura.html')}?id=${invoiceNumber}`;
+                new QRCode(qrContainer, {
+                    text: facturaUrl,
+                    width: 200,
+                    height: 200,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                boletoOutput.style.display = 'block';
+            });
+        })();
     </script>
 </body>
 </html>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const usuarioActivo = localStorage.getItem('usuarioActivo');
-        const perfilNombre = document.querySelector('.perfil-nombre');
-
-        // 1. RESTRICCIÓN DE ACCESO INMEDIATA (La guardia de la página)
-        // Si NO hay usuario activo, redirige a index.html y ELIMINA esta página del historial.
-        if (!usuarioActivo) {
-            // **CLAVE:** usa replace() para que el botón de retroceso no pueda volver a esta página.
-            window.location.replace("index.html");
-            return; // Detiene la ejecución del resto del script.
-        }
-
-        // --- Resto de la lógica (Solo se ejecuta si hay usuarioActivo) ---
-
-        // 2. CONFIGURACIÓN DEL NOMBRE
-        if (perfilNombre) {
-            perfilNombre.textContent = usuarioActivo.toUpperCase();
-        }
-
-        // 3. CIERRE DE SESIÓN (Logout)
-        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('usuarioActivo');
-            // **CLAVE:** usa replace() para que el botón de retroceso no pueda volver aquí.
-            window.location.replace('index.html'); 
-        });
-
-        // 4. LÓGICA DEL TOGGLE DEL MENÚ (Se mantiene)
-        const profileToggle = document.getElementById("profileToggle");
-        const profileMenu = document.getElementById("profileMenu"); 
-        
-        if (profileToggle && profileMenu) {
-            profileToggle.addEventListener('click', function(e) {
-                e.stopPropagation(); 
-                profileMenu.classList.toggle("show");
-            });
-
-            document.addEventListener("click", function (e) {
-                if (!profileMenu.contains(e.target)) {
-                    profileMenu.classList.remove("show");
-                }
-            });
-        }
-    });
-</script>

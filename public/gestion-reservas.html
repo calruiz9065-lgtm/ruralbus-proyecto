@@ -3,594 +3,893 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Reservas - RuralBus PROYECTO</title>
-    <!-- Fuente y Íconos -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Gestión de Reservas - RuralBus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+   <style>
+    /* ======================================= */
+    /* ESTILOS EXCLUSIVOS DE GESTIÓN-RESERVAS */
+    /* ======================================= */
     
-    <style>
-        /* Configuración de Tailwind y Fuentes */
-        :root {
-            --color-primary: #00796b; /* Verde oscuro primario (usado en botones, foco) */
-            --color-secondary: #c0392b; /* Rojo para limpiar/eliminar */
-            --color-accent: #006b5a; /* Verde para encabezados de tabla */
-            --color-header-bg: #004d40; /* Color de fondo solicitado para la cabecera */
-            --color-edit: #4a90e2; /* Azul para editar */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-            color: #2c3e50;
-        }
+    .module-cabecera-especial {
+        background-color: #004d40;
+        color: #fff;
+        border-radius: 12px;
+        padding: 30px 24px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+    
+    .module-cabecera-especial h2 {
+        color: #fff;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    
+    .module-cabecera-especial p {
+        color: #e0f2f1;
+        font-size: 1rem;
+    }
+    
+    .form-row { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+        gap: 20px; 
+        align-items: end; 
+    }
+    
+    .form-row label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+        color: #2c3e50;
+    }
+    
+    .form-row input,
+    .form-row select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        background: #fafafa;
+    }
+    
+    .form-row input:focus,
+    .form-row select:focus {
+        border-color: #00796b;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0,121,107,0.1);
+    }
+    
+    .form-row .grid-actions {
+        grid-column: 1 / -1; 
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 10px;
+    }
+    
+    .btn-editar {
+        background: #4a90e2;
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+    
+    .btn-eliminar {
+        background: #d32f2f;
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+    
+    .btn-editar:hover, .btn-eliminar:hover {
+        opacity: 0.85;
+    }
+    
+    /* ======================================= */
+    /* MODAL COMPLETO CON BARRA DE PROGRESO   */
+    /* ======================================= */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        backdrop-filter: blur(3px);
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal.show { display: flex; }
+    
+    .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+        transform: scale(0.9);
+        transition: transform 0.2s ease;
+    }
+    
+    .modal.show .modal-content {
+        transform: scale(1);
+    }
+    
+    .modal-content h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+    
+    .modal-content p {
+        margin-bottom: 20px;
+        color: #4b5563;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    /* Barra de progreso */
+    .modal-progress {
+        height: 4px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 15px 0 20px;
+        width: 100%;
+    }
+    
+    .modal-progress .bar {
+        height: 100%;
+        width: 0%;
+        transition: width 3s linear;
+        border-radius: 4px;
+    }
+    
+    /* Botones del modal */
+    .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 5px;
+    }
+    
+    .modal-btn {
+        padding: 10px 24px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+    
+    .modal-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(0.95);
+    }
+    
+    .modal-btn-confirm { color: white; }
+    .modal-btn-cancel {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+    .modal-btn-cancel:hover {
+        background-color: #ccc;
+    }
+    
+    /* Colores por tipo de alerta */
+    .modal[data-type="success"] .modal-content h4 { color: #2e7d32; }
+    .modal[data-type="success"] .modal-progress .bar { background: linear-gradient(90deg, #2e7d32, #00796b); }
+    .modal[data-type="success"] .modal-btn-confirm { background: linear-gradient(135deg, #2e7d32, #00796b); }
+    
+    .modal[data-type="error"] .modal-content h4 { color: #c62828; }
+    .modal[data-type="error"] .modal-progress .bar { background: linear-gradient(90deg, #c62828, #d32f2f); }
+    .modal[data-type="error"] .modal-btn-confirm { background: linear-gradient(135deg, #c62828, #d32f2f); }
+    
+    .modal[data-type="info"] .modal-content h4 { color: #1565c0; }
+    .modal[data-type="info"] .modal-progress .bar { background: linear-gradient(90deg, #1565c0, #1976d2); }
+    .modal[data-type="info"] .modal-btn-confirm { background: linear-gradient(135deg, #1565c0, #1976d2); }
+    
+    .modal[data-type="warning"] .modal-content h4 { color: #f57c00; }
+    .modal[data-type="warning"] .modal-progress .bar { background: linear-gradient(90deg, #f57c00, #fb8c00); }
+    .modal[data-type="warning"] .modal-btn-confirm { background: linear-gradient(135deg, #f57c00, #fb8c00); }
+    
+    /* ======================================= */
+    /* SCROLL HORIZONTAL PARA TABLA - FORZADO  */
+    /* ======================================= */
 
-        /* Estilo General de Contenedores */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .logo img {
-            height: 48px;
-        }
-        .main-content {
-            padding: 0 2rem 2rem 2rem;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
+    .data-table-container {
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
 
-        /* --- ESTILO PARA EL CONTENEDOR DE CABECERA (SOLICITADO: #004d40 y CENTRADO) --- */
-        .module-cabecera-especial {
-            background-color: var(--color-header-bg); /* #004d40 */
-            color: #fff; /* Texto blanco para alto contraste */
-            border-radius: 12px;
-            padding: 30px 24px;
-            margin-bottom: 24px;
-            text-align: center; /* Centrado solicitado */
-            box-shadow: 0 6px 15px rgba(0, 77, 64, 0.4);
-        }
-        .module-cabecera-especial h2 {
-            color: #fff;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .module-cabecera-especial p {
-            color: #e0f2f1; /* Verde claro para el subtítulo */
-            font-size: 1.1rem;
-        }
-        /* ---------------------------------------------------------------- */
+    .data-table {
+        min-width: 1200px !important;
+        width: auto !important;
+    }
 
+    .data-table th,
+    .data-table td {
+        white-space: nowrap !important;
+    }
 
-        /* Tarjetas de Contenido BLANCO */
-        .content-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            margin-bottom: 24px;
-        }
+    .data-table-container::-webkit-scrollbar {
+        height: 10px;
+    }
 
-        /* Formulario Grid */
-        .form-row { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 16px; 
-            align-items: end; 
-        }
-        .form-row > div:last-child {
-            grid-column: 1 / -1; 
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            padding-top: 10px;
-        }
+    .data-table-container::-webkit-scrollbar-track {
+        background: #e0e0e0;
+        border-radius: 10px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
-        input, select { 
-            padding: 12px; 
-            border-radius: 8px; 
-            border: 1px solid #e5e7eb; 
-            width: 100%; 
-            box-sizing: border-box;
-            background-color: #f9fafb;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus {
-            border-color: var(--color-primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 121, 107, 0.1);
-        }
+    .data-table-container::-webkit-scrollbar-thumb {
+        background: #5e605f;
+        border-radius: 10px;
+    }
 
-        /* Botones de Acción Globales */
-        .btn-primary, .btn-secondary, .btn-volver {
-            padding: 10px 18px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s, transform 0.1s;
-            white-space: nowrap;
-        }
-        .btn-primary { 
-            background: var(--color-primary); 
-            color: #fff; 
-        }
-        .btn-secondary { 
-            background: var(--color-secondary); 
-            color: #fff; 
-        }
-        .btn-volver {
-            background-color: #e0f2f1;
-            color: #004d40;
-            text-decoration: none;
-        }
-        .btn-primary:hover { background-color: #00695c; }
-        .btn-secondary:hover { background-color: #a93226; }
+    .data-table-container::-webkit-scrollbar-thumb:hover {
+        background: #5e605f;
+    }
 
-        /* Estilos de Tabla (Ajustados para texto LINEAL y SCROLL HORIZONTAL) */
-        .data-table-container {
-            width: 100%;
-            overflow-x: auto; /* Mantiene el scroll horizontal para texto lineal */
-            -webkit-overflow-scrolling: touch;
-        }
+    @media (max-width: 768px) {
         .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
+            min-width: 900px !important;
         }
-        .data-table th, .data-table td {
-            padding: 12px 14px;
-            text-align: left;
-            vertical-align: middle;
-        }
-        .data-table th {
-            background: var(--color-accent); /* Verde oscuro */
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.9rem;
-            border-bottom: 4px solid #004d40;
-            text-transform: uppercase;
-        }
-        .data-table td {
-            border-bottom: 1px solid #f0f0f0;
-            color: #333;
-            font-size: 0.9rem;
-            white-space: nowrap; /* ESTO FUERZA EL COMPORTAMIENTO LINEAL (no wrap) */
-        }
-        .data-table tbody tr:nth-child(even) { background: #f9f9f9; }
-        .data-table tbody tr:hover { background: #e8f5e9; cursor: default; }
-        
-        /* Botones de Tabla Compactos y Estilizados */
-        .btn-editar, .btn-eliminar {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            line-height: 1;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-        .btn-editar { background: var(--color-edit); color: #fff; }
-        .btn-eliminar { background: var(--color-secondary); color: #fff; }
-        .btn-editar:hover, .btn-eliminar:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-editar i, .btn-eliminar i { margin-right: 4px; }
-
-        /* Responsive para Móvil */
-        @media (max-width: 768px) {
-            .dashboard-header, .main-content {
-                padding: 1rem;
-            }
-            .module-cabecera-especial h2 {
-                font-size: 1.5rem;
-            }
-            .module-cabecera-especial {
-                padding: 20px 16px;
-            }
-            .content-card {
-                padding: 16px;
-            }
-            .form-row {
-                grid-template-columns: 1fr; /* Una columna en móvil */
-            }
-            .form-row > div:last-child {
-                justify-content: center; /* Centrar botones de acción */
-            }
-            .data-table td, .data-table th {
-                padding: 10px 8px;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* --- Estilos para el Modal de Alerta/Confirmación --- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal.show {
-            display: flex;
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            transform: translateY(-20px) scale(0.9);
-            opacity: 0;
-            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-        }
-        .modal.show .modal-content {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-        .modal-content h4 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--color-primary);
-        }
-        .modal-content p {
-            margin-bottom: 20px;
-            color: #4b5563;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
+        .form-row {
+            grid-template-columns: 1fr;
             gap: 15px;
         }
-        .modal-btn {
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
+        .module-cabecera-especial h2 {
+            font-size: 1.3rem;
         }
-        .modal-btn-confirm { background-color: var(--color-primary); color: white; }
-        .modal-btn-cancel { background-color: #ccc; color: #333; }
-        .modal-btn-confirm:hover { background-color: #00695c; }
-        .modal-btn-cancel:hover { background-color: #bbb; }
-    </style>
+        .module-cabecera-especial {
+            padding: 20px 16px;
+        }
+        .modal-content {
+            padding: 20px;
+            width: 85%;
+        }
+    }
+
+    /* ======================================= */
+    /* MAPA DE ASIENTOS                        */
+    /* ======================================= */
+
+    .seat-map-container {
+        background: #f8f9fa;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 10px;
+        border: 1px solid #e0e8e5;
+    }
+
+    .seat-map-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #004d40;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .seat-legend {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e0e8e5;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: #5a6e66;
+    }
+
+    .legend-color {
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+    }
+
+    .legend-color.available {
+        background: #e8f0fe;
+        border: 1.5px solid #cbd5e1;
+    }
+
+    .legend-color.occupied {
+        background: #d32f2f;
+    }
+
+    .legend-color.selected {
+        background: #00a86b;
+    }
+
+    .seat-grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 10px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .seat {
+        aspect-ratio: 1 / 0.9;
+        background: #e8f0fe;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #2c5448;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .seat:hover:not(.occupied) {
+        background: #00a86b;
+        border-color: #008a55;
+        color: white;
+        transform: scale(1.02);
+    }
+
+    .seat.occupied {
+        background: #d32f2f;
+        border-color: #b71c1c;
+        color: white;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .seat.selected {
+        background: #00a86b;
+        border-color: #008a55;
+        color: white;
+        box-shadow: 0 0 0 2px rgba(0,168,107,0.3);
+    }
+
+    .seat-number {
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+        .seat-grid {
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .seat-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+</style>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
     <header class="dashboard-header">
-        <div class="logo">
-            <!-- Usando un placeholder simple o referencia local -->
-            <img src="logo.png.png" alt="RuralBus Logo" style="height:48px; border-radius: 8px;"> 
+        <div class="header-left">
+            <img src="logo.png.png" alt="RuralBus" class="header-logo">
         </div>
         <a href="reservas.html" class="btn-volver">
             <i class="fas fa-arrow-left"></i> Volver al Panel
         </a>
     </header>
 
-    <main class="main-content">
-        <!-- MÓDULO DE CABECERA SEPARADO CON ESTILO PERSONALIZADO (#004d40 y CENTRADO) -->
+    <main class="main-content" style="flex: 1;">
         <section class="module-cabecera-especial">
-            <h2>📞 Gestión de Reservas y Llamadas 🎟️</h2>
+            <h2> Gestión de Reservas y Llamadas </h2>
             <p>Aquí puedes crear, buscar y gestionar todas las reservas de pasajes. Organice sus viajes.</p>
         </section>
 
-        <!-- FORMULARIO DE RESERVA (DENTRO DE UNA TARJETA BLANCA) -->
         <section class="content-card">
-            <h3 class="text-xl font-bold mb-4 text-gray-700">Crear o Editar Reserva</h3>
+            <h3>Crear o Editar Reserva</h3>
             <form id="crearReservaForm" class="form-row">
                 <div>
-                    <label for="nombre">Nombre del Pasajero:</label>
-                    <input type="text" id="nombre" required placeholder="Nombre completo" autocomplete="off">
+                    <label>Nombre del Pasajero:</label>
+                    <input type="text" id="nombre" required placeholder="Nombre completo">
                 </div>
                 <div>
-                    <label for="dni">DNI/ID:</label>
-                    <input type="text" id="dni" required placeholder="13 dígitos" autocomplete="off">
+                    <label>DNI/ID:</label>
+                    <input type="text" id="dni" required placeholder="13 dígitos">
                 </div>
                 <div>
-                    <label for="ruta">Ruta:</label>
+                    <label>Ruta:</label>
                     <select id="ruta" required>
                         <option value="">Seleccione una ruta</option>
-                        <!-- Se usa el texto para la lógica de precio, pero el valor se usa para el formulario -->
-                        <option value="Mercado Municipal de Jinotega - Ayapal, San José de Bocay">Mercado Municipal de Jinotega - Ayapal, San José de Bocay (C$ 150.00)</option>
                         <option value="Managua - Granada">Managua - Granada (C$ 50.00)</option>
-                        <option value="Managua - Rio Blanco">Managua - Rio Blanco (C$ 120.00)</option>
+                        <option value="Managua - León">Managua - León (C$ 45.00)</option>
+                        <option value="Managua - Estelí">Managua - Estelí (C$ 120.00)</option>
+                        <option value="Managua - Rio Blanco">Managua - Rio Blanco (C$ 150.00)</option>
+                        <option value="Mercado Municipal de Jinotega - Ayapal, San José de Bocay">Jinotega - Ayapal (C$ 150.00)</option>
                     </select>
                 </div>
                 <div>
-                    <label for="fecha">Fecha de Viaje:</label>
+                    <label>Fecha de Viaje:</label>
                     <input type="date" id="fecha" required>
                 </div>
+               
+                <!-- MAPA DE ASIENTOS -->
                 <div>
-                    <label for="asiento">Número de Asiento:</label>
-                    <input type="number" id="asiento" required min="1" max="99" placeholder="Ej: 12">
+                    <label>Selecciona tu Asiento:</label>
+                    <div class="seat-map-container">
+                        <div class="seat-map-title">
+                            <i class="fas fa-chair"></i> Mapa de butacas — Haz clic en un asiento disponible
+                        </div>
+                        <div class="seat-legend">
+                            <div class="legend-item"><div class="legend-color available"></div><span>Disponible</span></div>
+                            <div class="legend-item"><div class="legend-color occupied"></div><span>Ocupado</span></div>
+                            <div class="legend-item"><div class="legend-color selected"></div><span>Tu selección</span></div>
+                        </div>
+                        <div id="seatGrid" class="seat-grid"></div>
+                        <input type="hidden" id="asiento" required>
+                        <p style="font-size: 0.75rem; color: #6c757d; margin-top: 12px; text-align: center;">
+                            <i class="fas fa-info-circle"></i> Los asientos ocupados (rojos) no están disponibles. Haz clic en uno verde para seleccionarlo.
+                        </p>
+                    </div>
                 </div>
 
                 <div class="grid-actions">
-                    <button type="submit" class="btn-primary" id="guardarBtn">
-                        <i class="fas fa-save"></i> Guardar
-                    </button>
-                    <button type="button" id="limpiarCampos" class="btn-secondary">
-                        <i class="fas fa-eraser"></i> Limpiar
-                    </button>
+                    <button type="submit" class="btn-primary" id="guardarBtn">Guardar</button>
+                    <button type="button" id="limpiarCampos" class="btn-secondary">Limpiar</button>
                 </div>
             </form>
         </section>
 
-        <!-- TABLA DE RESERVAS (DENTRO DE UNA TARJETA BLANCA) -->
         <section class="content-card">
-            <h3 class="text-xl font-bold mb-3 text-gray-700">Reservas Activas</h3>
+            <h3>Reservas Activas</h3>
             <div class="data-table-container">
-                <table class="data-table" aria-label="Reservas activas">
+                <table class="data-table">
                     <thead>
-                        <tr>
-                            <th>EDITAR</th>
-                            <th>DNI</th>
-                            <th>PASAJERO</th>
-                            <th>RUTA</th>
-                            <th>FECHA</th>
-                            <th>ASIENTO</th>
-                            <th>PRECIO</th>
-                            <th>ELIMINAR</th>
-                        </tr>
+                        <tr><th>EDITAR</th><th>DNI</th><th>PASAJERO</th><th>RUTA</th><th>FECHA</th><th>ASIENTO</th><th>PRECIO</th><th>ELIMINAR</th></tr>
                     </thead>
-                    <tbody id="reservasTableBody">
-                        <!-- Filas de ejemplo con la estructura corregida y completa -->
-                        <tr>
-                            <td><button class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
-                            <td>0001234567890</td>
-                            <td>Cristopher López</td>
-                            <td>Managua - Granada</td>
-                            <td>2025-11-08</td>
-                            <td>7</td>
-                            <td>C$ 50.00</td>
-                            <td><button class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
-                        </tr>
-                        <tr>
-                            <td><button class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
-                            <td>0009876543210</td>
-                            <td>Pedro González</td>
-                            <td>Mercado Municipal de Jinotega - Ayapal, San José de Bocay</td>
-                            <td>2025-09-30</td>
-                            <td>8</td>
-                            <td>C$ 150.00</td>
-                            <td><button class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="reservasTableBody"></tbody>
                 </table>
             </div>
         </section>
+        
     </main>
 
-    <!-- Modal de Alerta/Confirmación -->
-    <div id="customModal" class="modal">
+    <footer class="gestion-footer">
+        <p>© 2025 RuralBus. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="customModal" class="modal" data-type="success">
         <div class="modal-content">
             <h4 id="modalTitle">Mensaje</h4>
             <p id="modalMessage"></p>
+            <div id="modalProgressBar" class="modal-progress">
+                <div class="bar"></div>
+            </div>
             <div class="modal-buttons">
-                <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm" style="display: none;">Confirmar</button>
-                <button id="modalAlertBtn" class="modal-btn modal-btn-confirm">Aceptar</button>
+                <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Aceptar</button>
                 <button id="modalCancelBtn" class="modal-btn modal-btn-cancel" style="display: none;">Cancelar</button>
+                <button id="modalAlertBtn" class="modal-btn modal-btn-confirm" style="display: none;">Aceptar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Modal Control Functions (Replaces alert/confirm) ---
-        function showModal(title, message, isConfirm = false, onConfirm = () => {}, onCancel = () => {}) {
-            const modal = document.getElementById('customModal');
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalMessage').textContent = message;
+        (function() {
+            const STORAGE_KEY = 'gestionReservas';
+            let filaEnEdicion = null;
+            
+            // ======================================= //
+            // MAPA DE ASIENTOS - CONFIGURACIÓN        //
+            // ======================================= //
+            const SEAT_COLS = 8;
+            const SEAT_ROWS = 8;
+            let occupiedSeats = new Set();
+            let currentSelectedSeat = null;
 
-            const confirmBtn = document.getElementById('modalConfirmBtn');
-            const cancelBtn = document.getElementById('modalCancelBtn');
-            const alertBtn = document.getElementById('modalAlertBtn');
+            function generateSeatNumber(row, col) {
+                const rowLetter = String.fromCharCode(65 + row);
+                return `${rowLetter}${col + 1}`;
+            }
 
-            if (isConfirm) {
-                alertBtn.style.display = 'none';
-                confirmBtn.style.display = 'inline-block';
-                cancelBtn.style.display = 'inline-block';
+            function loadOccupiedSeatsFromTable() {
+                occupiedSeats.clear();
+                const tbody = document.getElementById('reservasTableBody');
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(tr => {
+                    const seatCell = tr.cells[5];
+                    if (seatCell) {
+                        const seatNumber = seatCell.textContent.trim();
+                        if (seatNumber && seatNumber !== '') {
+                            occupiedSeats.add(seatNumber);
+                        }
+                    }
+                });
+                if (!filaEnEdicion) {
+                    currentSelectedSeat = null;
+                    document.getElementById('asiento').value = '';
+                }
+            }
+
+            function renderSeatMap() {
+                const container = document.getElementById('seatGrid');
+                if (!container) return;
                 
-                confirmBtn.onclick = () => { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); onConfirm(); };
-                cancelBtn.onclick = () => { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); onCancel(); };
-            } else {
-                alertBtn.style.display = 'inline-block';
-                confirmBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-                alertBtn.onclick = () => { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); };
-            }
-            modal.classList.add('show');
-        }
-
-        // --- Lógica del CRUD y Helpers ---
-
-        // Precio por ruta (normalizando texto para evitar errores por mayúsculas/minúsculas)
-        function obtenerPrecio(ruta) {
-            const r = String(ruta).toLowerCase().trim();
-            if (r.includes('jinotega - ayapal')) return 150.00;
-            if (r.includes('managua - granada')) return 50.00;
-            if (r.includes('managua - rio blanco')) return 120.00;
-            return 0;
-        }
-
-        // Capitalización de texto: primera letra mayúscula de cada palabra
-        function capitalizarTexto(texto) {
-            return String(texto)
-                .trim()
-                .toLowerCase()
-                .split(/\s+/) // Separar por uno o más espacios
-                .map(p => p.charAt(0).toUpperCase() + p.slice(1))
-                .join(' ');
-        }
-
-        /* ELEMENTOS Y ESTADO */
-        const form = document.getElementById('crearReservaForm');
-        const tbody = document.getElementById('reservasTableBody');
-        const guardarBtn = document.getElementById('guardarBtn');
-        const dniInput = document.getElementById('dni');
-        const nombreInput = document.getElementById('nombre');
-        const rutaSelect = document.getElementById('ruta');
-        const fechaInput = document.getElementById('fecha');
-        const asientoInput = document.getElementById('asiento');
-        
-        let filaEnEdicion = null; // Guarda la referencia a la <tr> que se está editando
-
-        /* Manejo de Evento Submit del Formulario */
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            let nombre = nombreInput.value.trim();
-            const dni = dniInput.value.trim();
-            const ruta = rutaSelect.value.trim();
-            const fecha = fechaInput.value;
-            const asiento = asientoInput.value.trim();
-
-            // VALIDACIONES
-            if (!/^\d{13}$/.test(dni)) { 
-                showModal('Error de DNI', 'El DNI debe contener exactamente 13 dígitos.'); 
-                return; 
-            }
-            if (!/^\d+$/.test(asiento) || parseInt(asiento) < 1 || parseInt(asiento) > 99) { 
-                showModal('Error de Asiento', 'El número de asiento debe estar entre 1 y 99.'); 
-                return; 
-            }
-
-            // Verificar asiento duplicado en misma ruta+fecha
-            const rutaBuscada = ruta.toLowerCase().trim();
-            const asientosOcupadosMismaFecha = Array.from(tbody.querySelectorAll('tr'))
-                .filter(tr => tr !== filaEnEdicion) // Excluir la fila que se está editando
-                .filter(tr => {
-                    // Índices de columna: [0: EDITAR, 1: DNI, 2: PASAJERO, 3: RUTA, 4: FECHA, 5: ASIENTO, 6: PRECIO, 7: ELIMINAR]
-                    const rutaExistente = (tr.cells[3]?.textContent || '').trim().toLowerCase();
-                    const fechaExistente = (tr.cells[4]?.textContent || '').trim();
-                    // Usamos el texto de la opción seleccionada para la verificación de duplicados de asiento
-                    const selectedOptionText = rutaSelect.options[rutaSelect.selectedIndex].text.split('(')[0].trim().toLowerCase();
-                    return rutaExistente === selectedOptionText && fechaExistente === fecha;
-                })
-                .map(tr => (tr.cells[5] ? tr.cells[5].textContent.trim() : ''));
-
-            if (asientosOcupadosMismaFecha.includes(asiento)) {
-                showModal('Asiento Ocupado', `El asiento ${asiento} ya está ocupado para esa ruta y fecha.`); 
-                return;
-            }
-
-            // Normalizar datos
-            nombre = capitalizarTexto(nombre);
-            // La rutaNorm es el texto visible de la opción (sin precio)
-            const selectedOption = rutaSelect.options[rutaSelect.selectedIndex];
-            const rutaNorm = selectedOption ? selectedOption.text.split('(')[0].trim() : capitalizarTexto(ruta);
-            const precio = obtenerPrecio(ruta);
-
-            if (filaEnEdicion) {
-                // Modo Edición: Actualizar fila existente
-                filaEnEdicion.cells[1].textContent = dni;
-                filaEnEdicion.cells[2].textContent = nombre;
-                filaEnEdicion.cells[3].textContent = rutaNorm;
-                filaEnEdicion.cells[4].textContent = fecha;
-                filaEnEdicion.cells[5].textContent = asiento;
-                filaEnEdicion.cells[6].textContent = `C$ ${precio.toFixed(2)}`;
-
-                filaEnEdicion = null; // Finalizar edición
-                guardarBtn.innerHTML = '<i class="fas fa-save"></i> Guardar';
-                showModal('Actualización Exitosa', 'Reserva actualizada correctamente.');
-            } else {
-                // Modo Creación: Crear nueva fila
-                const nuevaFila = document.createElement('tr');
-                nuevaFila.innerHTML = `
-                    <td><button class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
-                    <td>${dni}</td>
-                    <td>${nombre}</td>
-                    <td>${rutaNorm}</td>
-                    <td>${fecha}</td>
-                    <td>${asiento}</td>
-                    <td>C$ ${precio.toFixed(2)}</td>
-                    <td><button class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
-                `;
-                tbody.appendChild(nuevaFila);
-                showModal('Creación Exitosa', 'Reserva creada correctamente.');
-            }
-
-            form.reset(); // Limpiar formulario
-        });
-
-        /* Delegación: Manejo de editar / eliminar en la tabla */
-        tbody.addEventListener('click', function(e) {
-            const tr = e.target.closest('tr');
-            if (!tr) return;
-
-            // Eliminar
-            if (e.target.classList.contains('btn-eliminar') || e.target.closest('.btn-eliminar')) {
-                showModal(
-                    'Confirmar Eliminación',
-                    '¿Deseas eliminar esta reserva de forma permanente?',
-                    true,
-                    () => { tr.remove(); showModal('Eliminado', 'La reserva ha sido eliminada.'); },
-                    () => {} // Cancelar no hace nada
-                );
-                return;
-            }
-
-            // Editar
-            if (e.target.classList.contains('btn-editar') || e.target.closest('.btn-editar')) {
-                filaEnEdicion = tr;
-
-                // Rellenar formulario (índices fijos según THEAD)
-                dniInput.value = tr.cells[1].textContent.trim();
-                nombreInput.value = tr.cells[2].textContent.trim();
+                container.innerHTML = '';
                 
-                // Intentar seleccionar la ruta:
-                const rutaValor = tr.cells[3].textContent.trim(); // Texto visible de la ruta (sin precio)
-                let foundMatch = false;
-                for (let i = 0; i < rutaSelect.options.length; i++) {
-                    const optionText = rutaSelect.options[i].text.split('(')[0].trim();
-                    // Buscar coincidencia exacta en el texto de la opción
-                    if (optionText === rutaValor) {
-                        rutaSelect.selectedIndex = i;
-                        foundMatch = true;
-                        break;
+                for (let row = 0; row < SEAT_ROWS; row++) {
+                    for (let col = 0; col < SEAT_COLS; col++) {
+                        const seatNum = generateSeatNumber(row, col);
+                        const isOccupied = occupiedSeats.has(seatNum);
+                        const isSelected = (currentSelectedSeat === seatNum);
+                        
+                        const seatDiv = document.createElement('div');
+                        seatDiv.className = 'seat';
+                        if (isOccupied) seatDiv.classList.add('occupied');
+                        if (isSelected) seatDiv.classList.add('selected');
+                        
+                        seatDiv.innerHTML = `<span class="seat-number">${seatNum}</span>`;
+                        
+                        if (!isOccupied) {
+                            seatDiv.addEventListener('click', (function(seat) {
+                                return function() {
+                                    if (currentSelectedSeat === seat) {
+                                        currentSelectedSeat = null;
+                                        document.getElementById('asiento').value = '';
+                                        renderSeatMap();
+                                        showModal('Asiento deseleccionado', `Has deseleccionado el asiento ${seat}.`, false, null, null, 'info');
+                                    } else {
+                                        currentSelectedSeat = seat;
+                                        document.getElementById('asiento').value = seat;
+                                        renderSeatMap();
+                                        showModal('Asiento seleccionado', `Has seleccionado el asiento ${seat}. Guarda la reserva para confirmar.`, false, null, null, 'success');
+                                    }
+                                };
+                            })(seatNum));
+                        } else {
+                            seatDiv.title = `Asiento ${seatNum} - Ocupado`;
+                        }
+                        
+                        container.appendChild(seatDiv);
                     }
                 }
-                if (!foundMatch) rutaSelect.selectedIndex = 0; // Seleccionar el placeholder si no hay match
-                
-                fechaInput.value = tr.cells[4].textContent.trim();
-                asientoInput.value = tr.cells[5].textContent.trim();
-                
-                guardarBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Actualizar Reserva';
-                showModal('Modo Edición', 'Estás editando la reserva seleccionada. Modifica los campos y haz clic en Actualizar.');
             }
-        });
 
-        /* Botón Limpiar */
-        document.getElementById('limpiarCampos').addEventListener('click', function() {
-            form.reset();
-            filaEnEdicion = null;
-            guardarBtn.innerHTML = '<i class="fas fa-save"></i> Guardar';
-            showModal('Formulario Limpio', 'Campos de formulario restablecidos a modo "Crear Reserva".');
-        });
+            function updateOccupiedSeatsAfterSave(seatNumber) {
+                if (seatNumber) {
+                    occupiedSeats.add(seatNumber);
+                }
+                loadOccupiedSeatsFromTable();
+                renderSeatMap();
+            }
 
+            function releaseSeatAfterDelete(seatNumber) {
+                if (seatNumber) {
+                    occupiedSeats.delete(seatNumber);
+                }
+                loadOccupiedSeatsFromTable();
+                renderSeatMap();
+                if (currentSelectedSeat === seatNumber) {
+                    currentSelectedSeat = null;
+                    document.getElementById('asiento').value = '';
+                }
+            }
+
+            // ======================================= //
+            // FUNCIONES EXISTENTES (MODIFICADAS)      //
+            // ======================================= //
+            
+            function showModal(title, message, isConfirm = false, onConfirm = () => {}, onCancel = () => {}, type = 'success') {
+                const modal = document.getElementById('customModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalMessage = document.getElementById('modalMessage');
+                const confirmBtn = document.getElementById('modalConfirmBtn');
+                const cancelBtn = document.getElementById('modalCancelBtn');
+                const alertBtn = document.getElementById('modalAlertBtn');
+                const progressWrap = document.getElementById('modalProgressBar');
+                const progressBar = progressWrap ? progressWrap.querySelector('.bar') : null;
+
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modal.setAttribute('data-type', type);
+
+                if (window._modalTimer) {
+                    clearTimeout(window._modalTimer);
+                    window._modalTimer = null;
+                }
+
+                if (progressBar) {
+                    progressBar.style.transition = '';
+                    progressBar.style.width = '0%';
+                }
+
+                if (isConfirm) {
+                    if (progressWrap) progressWrap.style.display = 'none';
+                    alertBtn.style.display = 'none';
+                    confirmBtn.style.display = 'inline-block';
+                    cancelBtn.style.display = 'inline-block';
+
+                    const newConfirm = confirmBtn.cloneNode(true);
+                    const newCancel = cancelBtn.cloneNode(true);
+                    confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+                    cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+
+                    newConfirm.onclick = () => {
+                        modal.classList.remove('show');
+                        setTimeout(() => modal.style.display = 'none', 300);
+                        onConfirm();
+                    };
+                    newCancel.onclick = () => {
+                        modal.classList.remove('show');
+                        setTimeout(() => modal.style.display = 'none', 300);
+                        if (onCancel) onCancel();
+                    };
+                } else {
+                    if (progressWrap) progressWrap.style.display = 'block';
+                    alertBtn.style.display = 'inline-block';
+                    confirmBtn.style.display = 'none';
+                    cancelBtn.style.display = 'none';
+
+                    const newAlert = alertBtn.cloneNode(true);
+                    alertBtn.parentNode.replaceChild(newAlert, alertBtn);
+
+                    newAlert.onclick = () => {
+                        modal.classList.remove('show');
+                        setTimeout(() => modal.style.display = 'none', 300);
+                        if (progressBar) {
+                            progressBar.style.transition = '';
+                            progressBar.style.width = '0%';
+                        }
+                    };
+
+                    if (progressBar) {
+                        setTimeout(() => {
+                            progressBar.style.transition = `width 3000ms linear`;
+                            progressBar.style.width = '100%';
+                        }, 50);
+                    }
+
+                    window._modalTimer = setTimeout(() => {
+                        modal.classList.remove('show');
+                        setTimeout(() => {
+                            modal.style.display = 'none';
+                            if (progressBar) {
+                                progressBar.style.transition = '';
+                                progressBar.style.width = '0%';
+                            }
+                        }, 300);
+                    }, 3000);
+                }
+
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('show'), 10);
+            }
+
+            function saveToLocalStorage() {
+                const tbody = document.getElementById('reservasTableBody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const data = rows.map(tr => ({
+                    dni: tr.cells[1].textContent.trim(),
+                    nombre: tr.cells[2].textContent.trim(),
+                    ruta: tr.cells[3].textContent.trim(),
+                    fecha: tr.cells[4].textContent.trim(),
+                    asiento: tr.cells[5].textContent.trim(),
+                    precio: parseFloat(tr.cells[6].textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) || 0
+                }));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                loadOccupiedSeatsFromTable();
+                renderSeatMap();
+            }
+
+            function loadFromLocalStorage() {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    if (!Array.isArray(data)) return;
+                    const tbody = document.getElementById('reservasTableBody');
+                    tbody.innerHTML = '';
+                    data.forEach(reserva => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><button type="button" class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
+                            <td>${reserva.dni}</td>
+                            <td>${reserva.nombre}</td>
+                            <td>${reserva.ruta}</td>
+                            <td>${reserva.fecha}</td>
+                            <td>${reserva.asiento}</td>
+                            <td>C$ ${Number(reserva.precio).toFixed(2)}</td>
+                            <td><button type="button" class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    loadOccupiedSeatsFromTable();
+                    renderSeatMap();
+                } catch(e) { console.warn(e); }
+            }
+
+            function obtenerPrecio(ruta) {
+                const r = String(ruta).toLowerCase();
+                if (r.includes('jinotega') || r.includes('ayapal')) return 150;
+                if (r.includes('granada')) return 50;
+                if (r.includes('león')) return 45;
+                if (r.includes('estelí')) return 120;
+                if (r.includes('rio blanco')) return 150;
+                return 0;
+            }
+
+            function generarNumeroFactura() {
+                return `FB-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            }
+
+            function guardarBoleto(nombre, dni, ruta, asiento, precio) {
+                const invoiceNumber = generarNumeroFactura();
+                const invoice = {
+                    invoiceNumber, passenger: nombre, dni, route: ruta,
+                    company: 'RuralBus', seat: asiento, price: precio,
+                    taxAmount: +(precio * 0.13).toFixed(2),
+                    total: +(precio * 1.13).toFixed(2),
+                    issueDate: new Date().toLocaleString('es-NI'),
+                    expiryDate: new Date(Date.now() + 86400000).toLocaleString('es-NI')
+                };
+                localStorage.setItem(invoiceNumber, JSON.stringify(invoice));
+                localStorage.setItem(dni, JSON.stringify(invoice));
+                return invoiceNumber;
+            }
+
+            // ======================================= //
+            // EVENTOS Y INICIALIZACIÓN                //
+            // ======================================= //
+            
+            loadFromLocalStorage();
+
+            document.getElementById('crearReservaForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nombre = document.getElementById('nombre').value.trim();
+                const dni = document.getElementById('dni').value.trim();
+                const rutaSelect = document.getElementById('ruta');
+                const ruta = rutaSelect.options[rutaSelect.selectedIndex].text.split('(')[0].trim();
+                const fecha = document.getElementById('fecha').value;
+                const asiento = document.getElementById('asiento').value.trim();
+                
+                if (!/^\d{13}$/.test(dni)) {
+                    showModal('Error', 'El DNI debe tener 13 dígitos.');
+                    return;
+                }
+                
+                if (!asiento) {
+                    showModal('Error', 'Debes seleccionar un asiento en el mapa.');
+                    return;
+                }
+                
+                if (occupiedSeats.has(asiento) && (!filaEnEdicion || filaEnEdicion.cells[5].textContent.trim() !== asiento)) {
+                    showModal('Error', `El asiento ${asiento} ya está ocupado. Por favor selecciona otro.`);
+                    return;
+                }
+                
+                const precio = obtenerPrecio(ruta);
+                const tbody = document.getElementById('reservasTableBody');
+                
+                if (filaEnEdicion) {
+                    const oldSeat = filaEnEdicion.cells[5].textContent.trim();
+                    filaEnEdicion.cells[1].textContent = dni;
+                    filaEnEdicion.cells[2].textContent = nombre;
+                    filaEnEdicion.cells[3].textContent = ruta;
+                    filaEnEdicion.cells[4].textContent = fecha;
+                    filaEnEdicion.cells[5].textContent = asiento;
+                    filaEnEdicion.cells[6].textContent = `C$ ${precio.toFixed(2)}`;
+                    
+                    if (oldSeat !== asiento) {
+                        releaseSeatAfterDelete(oldSeat);
+                    }
+                    
+                    saveToLocalStorage();
+                    filaEnEdicion = null;
+                    currentSelectedSeat = null;
+                    document.getElementById('guardarBtn').innerHTML = 'Guardar';
+                    showModal('Actualizado', 'Reserva actualizada correctamente.');
+                } else {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><button type="button" class="btn-editar"><i class="fas fa-pen"></i> Editar</button></td>
+                        <td>${dni}</td>
+                        <td>${nombre}</td>
+                        <td>${ruta}</td>
+                        <td>${fecha}</td>
+                        <td>${asiento}</td>
+                        <td>C$ ${precio.toFixed(2)}</td>
+                        <td><button type="button" class="btn-eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                    saveToLocalStorage();
+                    
+                    const factura = guardarBoleto(nombre, dni, ruta, asiento, precio);
+                    showModal('Éxito', `¡Reserva creada!\nFactura: ${factura}\nAsiento: ${asiento}`);
+                }
+                
+                document.getElementById('crearReservaForm').reset();
+                currentSelectedSeat = null;
+                document.getElementById('asiento').value = '';
+                renderSeatMap();
+            });
+            
+            document.getElementById('limpiarCampos').addEventListener('click', function() {
+                document.getElementById('crearReservaForm').reset();
+                filaEnEdicion = null;
+                currentSelectedSeat = null;
+                document.getElementById('asiento').value = '';
+                document.getElementById('guardarBtn').innerHTML = 'Guardar';
+                renderSeatMap();
+                showModal('Formulario limpio', 'Campos restablecidos.');
+            });
+            
+            document.getElementById('reservasTableBody').addEventListener('click', function(e) {
+                const target = e.target.closest('button');
+                if (!target) return;
+                const tr = target.closest('tr');
+                
+                if (target.classList.contains('btn-editar')) {
+                    const currentSeat = tr.cells[5].textContent.trim();
+                    document.getElementById('dni').value = tr.cells[1].textContent;
+                    document.getElementById('nombre').value = tr.cells[2].textContent;
+                    const rutaNombre = tr.cells[3].textContent;
+                    const select = document.getElementById('ruta');
+                    for (let i = 0; i < select.options.length; i++) {
+                        if (select.options[i].text.split('(')[0].trim() === rutaNombre) {
+                            select.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    document.getElementById('fecha').value = tr.cells[4].textContent;
+                    
+                    currentSelectedSeat = currentSeat;
+                    document.getElementById('asiento').value = currentSeat;
+                    renderSeatMap();
+                    
+                    filaEnEdicion = tr;
+                    document.getElementById('guardarBtn').innerHTML = 'Actualizar';
+                    showModal('Edición', `Editando reserva - Asiento ${currentSeat}`);
+                }
+                
+                if (target.classList.contains('btn-eliminar')) {
+                    const seatToRelease = tr.cells[5].textContent.trim();
+                    showModal('Eliminar', '¿Deseas eliminar esta reserva?', true, () => {
+                        tr.remove();
+                        releaseSeatAfterDelete(seatToRelease);
+                        saveToLocalStorage();
+                        if (filaEnEdicion === tr) {
+                            filaEnEdicion = null;
+                            currentSelectedSeat = null;
+                            document.getElementById('guardarBtn').innerHTML = 'Guardar';
+                            document.getElementById('asiento').value = '';
+                        }
+                        showModal('Eliminado', 'Reserva eliminada.');
+                    });
+                }
+            });
+        })();
     </script>
 </body>
 </html>

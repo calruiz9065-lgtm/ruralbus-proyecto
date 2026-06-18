@@ -3,46 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capacidad en Tiempo Real - RuralBus PROYECTO</title>
+    <title>Capacidad en Tiempo Real - RuralBus</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> 
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="dashboard-header">
-        <div class="logo">
-            <img src="logo.png.png" alt="RuralBus Logo"> 
-         
-        </div>
-        
-        <a href="reservas.html" class="btn-volver">
-            <i class="fas fa-arrow-left"></i> Volver al Panel
-        </a>
-    </header>
-
+<header class="dashboard-header">
+    <div class="header-left">
+        <img src="logo.png.png" alt="RuralBus" class="header-logo">
+    </div>
+    <a href="reservas.html" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver al Panel
+    </a>
+</header>
     <main class="main-content">
         <section class="module-header">
-            <h2>🚌 Capacidad en Tiempo Real⏱️📊</h2>
-            <p>👀 Monitoreo en vivo de la ocupación y disponibilidad de asientos por ruta.</p>
+            <h2>Capacidad en Tiempo Real</h2>
+            <p>Monitoreo en vivo de la ocupación y disponibilidad de asientos por ruta.</p>
         </section>
-<div class="metrics-grid">
-    <!-- Ocupación Global -->
-    <div class="metric-card">
-        <h3>Ocupación Global 📊</h3>
-        <p class="metric-value">65%</p>
-        <p class="metric-description">Ocupación promedio de todos los buses activos.</p>
-    </div>
 
-    <!-- Buses Activos -->
-    <div class="metric-card">
-        <h3>Buses Activos 🚌</h3>
-        <p class="metric-value">4 / 6</p>
-        <p class="metric-description">Número de unidades en servicio actualmente.</p>
-    </div>
-</div>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Ocupación Global</h3>
+                <p class="metric-value">65%</p>
+                <p class="metric-description">Ocupación promedio de todos los buses activos.</p>
+            </div>
 
-
+            <div class="metric-card">
+                <h3>Buses Activos</h3>
+                <p class="metric-value">4 / 6</p>
+                <p class="metric-description">Número de unidades en servicio actualmente.</p>
+            </div>
+        </div>
 
         <section class="content-card" style="margin-top: 30px;">
             <h3>Detalle de Ocupación por Ruta</h3>
@@ -83,19 +76,20 @@
                             <td>15</td>
                             <td>70%</td>
                         </tr>
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>© 2025 RuralBus.Todos los derechos reservados.</p>
+    <footer class="custom-footer">
+        <p>© 2025 RuralBus. Todos los derechos reservados.</p>
     </footer>
-
-    <script src="main.js"></script>
 </body>
 </html>
+
+    <script src="main.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const usuarioActivo = localStorage.getItem('usuarioActivo');

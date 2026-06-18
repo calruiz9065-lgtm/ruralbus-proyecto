@@ -1,0 +1,168 @@
+2026-05-27T16:25:12.643Z - SyntaxError: Expected property name or '}' in JSON at position 7 (line 2 column 5)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+2026-05-27T16:25:12.702Z - SyntaxError: Expected property name or '}' in JSON at position 7 (line 2 column 5)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+2026-05-27T16:25:12.995Z - SyntaxError: Expected property name or '}' in JSON at position 7 (line 2 column 5)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+2026-05-27T16:26:14.785Z - SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+2026-05-27T16:26:14.844Z - SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+2026-05-27T16:26:15.018Z - SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+2026-05-27T18:37:48.394Z - Registro ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.usuarios.create()` invocation in
+C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:31
+
+  33 if (!username || !password) return res.status(400).json({ message: 'Datos incompletos' });
+  34 
+  35 const hashed = await bcrypt.hash(password, 10);
+→ 36 await prisma.usuarios.create(
+Unique constraint failed on the constraint: `dbo.usuarios`
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:9
+
+2026-05-27T18:37:48.405Z - PrismaClientKnownRequestError: 
+Invalid `prisma.usuarios.create()` invocation in
+C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:31
+
+  33 if (!username || !password) return res.status(400).json({ message: 'Datos incompletos' });
+  34 
+  35 const hashed = await bcrypt.hash(password, 10);
+→ 36 await prisma.usuarios.create(
+Unique constraint failed on the constraint: `dbo.usuarios`
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:9
+
+2026-05-27T18:40:08.106Z - Registro ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.usuarios.create()` invocation:
+
+
+Unique constraint failed on the constraint: `dbo.usuarios`
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:9
+
+2026-05-27T18:40:08.110Z - PrismaClientKnownRequestError: 
+Invalid `prisma.usuarios.create()` invocation:
+
+
+Unique constraint failed on the constraint: `dbo.usuarios`
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:9
+
+2026-05-27T18:40:10.618Z - Registro ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.usuarios.create()` invocation:
+
+
+Unique constraint failed on the constraint: `dbo.usuarios`
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:9
+
+2026-05-27T18:40:10.620Z - PrismaClientKnownRequestError: 
+Invalid `prisma.usuarios.create()` invocation:
+
+
+Unique constraint failed on the constraint: `dbo.usuarios`
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:36:9
+
+2026-06-16T03:37:01.369Z - Login ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.llaves_acceso.deleteMany()` invocation:
+
+
+The table `dbo.llaves_acceso` does not exist in the current database.
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:107:9
+
+2026-06-16T03:37:01.377Z - GLOBAL ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.llaves_acceso.deleteMany()` invocation:
+
+
+The table `dbo.llaves_acceso` does not exist in the current database.
+    at $n.handleRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async C:\Users\camil\OneDrive\Desktop\RURALBUS-PROYECTO\RURALBUS-PROYECTO\RURALBUS BACKEND NUEVO\server.js:107:9
+

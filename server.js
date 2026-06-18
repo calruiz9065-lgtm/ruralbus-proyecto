@@ -1,149 +1,99 @@
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const sql = require('mssql');
 const path = require('path');
+const prisma = require('./prismaClient');
+const rateLimit = require('express-rate-limit');
+const { verificarToken, verificarAdmin } = require('./middleware/auth');
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
-// =============================
-// CONFIG DB
-// =============================
 const dbConfig = {
-    user: 'sa',
-    password: '123456',
-    server: '127.0.0.1',
-    port: 1433,
-    database: 'RuralBusDB',
-    options: {
-        trustServerCertificate: true
-    }
+    user: process.env.DB_USER || 'sa',
+    password: process.env.DB_PASSWORD || '123456',
+    server: process.env.DB_SERVER || '127.0.0.1',
+    port: parseInt(process.env.DB_PORT) || 1433,
+    database: process.env.DB_NAME || 'RuralBusDB',
+    options: { trustServerCertificate: true }
 };
 
-app.use(cors());
+// Subimos el límite a 500 para que trabajes sin bloqueos de 5 minutos
+const limitadorAutenticacion = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 500,
+    message: { message: "Demasiados intentos." }
+});
+
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// =============================
-// START SERVER
-// =============================
-async function iniciarServidor() {
+// REGISTRO
+app.post('/registro', limitadorAutenticacion, async (req, res, next) => {
     try {
-        const pool = await sql.connect(dbConfig);
-        console.log('✅ Conectado a SQL Server');
-
-        // =============================
-        // REGISTRO
-        // =============================
-        app.post('/registro', async (req, res) => {
-
-            console.log("📥 BODY:", req.body); // DEBUG
-
-            const { username, password } = req.body;
-
-            if (!username || !password) {
-                return res.status(400).json({ message: 'Datos incompletos' });
-            }
-
-            try {
-                const hashed = await bcrypt.hash(password, 10);
-
-                await pool.request()
-                    .input('username', sql.VarChar, username)
-                    .input('password', sql.VarChar, hashed)
-                    .query(`
-                        INSERT INTO usuarios (username, password)
-                        VALUES (@username, @password)
-                    `);
-
-                console.log("✅ Usuario insertado:", username);
-
-                res.json({ message: 'Registro exitoso' });
-
-            } catch (error) {
-
-                console.error("❌ ERROR SQL:", error);
-
-                if (error.number === 2627) {
-                    return res.status(400).json({ message: 'Usuario ya existe' });
-                }
-
-                res.status(500).json({ message: 'Error en registro' });
-            }
+        const { username, password } = req.body;
+        if (!username || !password) return res.status(400).json({ message: 'Datos incompletos' });
+        const hashed = await bcrypt.hash(password, 10);
+        await prisma.usuarios.create({ 
+            data: { username, password: hashed, rol: username === 'camilo123' ? 'admin' : 'usuario' }
         });
 
-        // =============================
-        // LOGIN
-        // =============================
-        app.post('/login', async (req, res) => {
+        // LOGGER: Registro de nuevo usuario en consola
+        console.info(`👤 [REGISTRO] Nuevo usuario creado en el sistema: "${username}"`);
 
-            console.log("📥 LOGIN:", req.body);
-
-            const { username, password } = req.body;
-
-            try {
-                const result = await pool.request()
-                    .input('username', sql.VarChar, username)
-                    .query(`
-                        SELECT * FROM usuarios WHERE username = @username
-                    `);
-
-                if (result.recordset.length === 0) {
-                    return res.status(401).json({ message: 'Usuario no existe' });
-                }
-
-                const user = result.recordset[0];
-
-                const match = await bcrypt.compare(password, user.password);
-
-                if (!match) {
-                    return res.status(401).json({ message: 'Contraseña incorrecta' });
-                }
-
-                // borrar tokens anteriores
-                await pool.request()
-                    .input('user', sql.VarChar, username)
-                    .query(`
-                        DELETE FROM llaves_acceso WHERE usuario_asignado = @user
-                    `);
-
-                const token = Math.random().toString(36).substring(2) + Date.now();
-
-                await pool.request()
-                    .input('token', sql.VarChar, token)
-                    .input('user', sql.VarChar, username)
-                    .query(`
-                        INSERT INTO llaves_acceso (usuario_asignado, token_llave)
-                        VALUES (@user, @token)
-                    `);
-
-                res.json({
-                    message: 'Login correcto',
-                    username,
-                    token
-                });
-
-            } catch (error) {
-                console.error(error);
-                res.status(500).json({ message: 'Error login' });
-            }
-        });
-
-        // =============================
-        // ROOT
-        // =============================
-        app.get('/', (req, res) => {
-            res.sendFile(path.join(__dirname, 'public', 'index.html'));
-        });
-
-        app.listen(PORT, () => {
-            console.log(`🚀 Servidor en http://localhost:${PORT}`);
-        });
-
+        res.json({ message: 'Registro exitoso' });
     } catch (error) {
-        console.error('❌ Error DB:', error);
+        if (error.code === 'P2002') return res.status(409).json({ message: 'El usuario ya existe' });
+        next(error); 
     }
-}
+});
 
-iniciarServidor();
+// LOGIN (Envía el token en el JSON, limpio de enredos de cookies)
+app.post('/login', limitadorAutenticacion, async (req, res, next) => {
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) return res.status(400).json({ message: 'Credenciales requeridas' });
+
+        const user = await prisma.usuarios.findUnique({ where: { username } });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ message: 'Credenciales inválidas' });
+        }
+
+        const token = jwt.sign({ username: user.username, rol: user.rol }, process.env.JWT_SECRET || 'SECRET_KEY_RURALBUS', { expiresIn: '2h' });
+        
+        // LOGGER: Registro de inicio de sesión exitoso en consola
+        console.info(`🔑 [LOGIN] El usuario "${username}" ha iniciado sesión correctamente. (Rol: ${user.rol})`);
+
+        // Respondemos directamente con el token en el objeto JSON
+        res.json({ message: 'Login correcto', token, rol: user.rol });
+    } catch (error) { next(error); }
+});
+
+// LOGOUT (Endpoint con logger para registrar salidas del cliente de forma explícita)
+app.post('/logout', verificarToken, (req, res) => {
+    // LOGGER: Registro de cierre de sesión en consola extrayendo los datos del middleware auth
+    console.info(`🚪 [LOGOUT] El usuario "${req.usuario.username}" ha cerrado su sesión de forma segura.`);
+    res.json({ message: 'Sesión cerrada exitosamente en el servidor' });
+});
+
+// RUTAS PROTEGIDAS
+app.get('/perfil', verificarToken, (req, res) => res.json({ usuario: req.usuario.username, rol: req.usuario.rol }));
+app.get('/admin-dashboard', verificarToken, verificarAdmin, (req, res) => res.json({ message: 'Bienvenido, Admin' }));
+
+app.use((req, res) => res.status(404).json({ message: 'La ruta no existe' }));
+app.use((err, req, res, next) => {
+    console.error("❌ ERROR:", err.stack);
+    res.status(500).json({ message: 'Error interno' });
+});
+
+async function iniciar() {
+    try {
+        await sql.connect(dbConfig);
+        app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Servidor RURALBUS listo en el puerto ${PORT}`));
+    } catch (e) { console.error('Error DB:', e); }
+}
+iniciar();

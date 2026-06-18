@@ -4,138 +4,762 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel Principal - RuralBus PROYECTO</title>
+    <title>Panel Principal - RuralBus</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    
     <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-    <header class="dashboard-header">
-        <div class="logo">
-            <img src="logo.png.png" alt="RuralBus Logo" id="logo-img"/>
-        </div>
+    
+    <style>
+        /* Estilos adicionales específicos */
+        .welcome-banner {
+            background: linear-gradient(135deg, #0a7b6e 0%, #008978 100%);
+            border-radius: 20px;
+            padding: 32px 28px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
         
+        .welcome-banner h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-banner p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+        }
+        
+        /* Quick Info Cards - Información útil de RuralBus */
+        .quick-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .quick-info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        
+        .quick-info-card .icon-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+        
+        .quick-info-card:nth-child(1) .icon-circle {
+            background: linear-gradient(135deg, #00a86b, #008a55);
+        }
+        .quick-info-card:nth-child(2) .icon-circle {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+        }
+        .quick-info-card:nth-child(3) .icon-circle {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+        }
+        
+        .quick-info-card .icon-circle i {
+            font-size: 1.6rem;
+            color: white;
+        }
+        
+        .quick-info-card h4 {
+            font-size: 0.95rem;
+            color: #004d40;
+            margin: 8px 0 4px;
+            font-weight: 700;
+        }
+        
+        .quick-info-card p {
+            font-size: 0.75rem;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+        
+        /* Monitor Box Nuevo */
+        .monitor-box-new {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .monitor-box-new h2 {
+            font-size: 1rem;
+            color: #004d40;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .monitor-item-new {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eef2f0;
+        }
+        
+        .monitor-item-new:last-child {
+            border-bottom: none;
+        }
+        
+        .monitor-city {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #1f4f45;
+            font-size: 0.88rem;
+        }
+        
+        .monitor-city i {
+            font-size: 0.95rem;
+            color: #00a86b;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00a86b;
+            box-shadow: 0 0 0 2px rgba(0,168,107,0.2);
+        }
+        
+        .status-text {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #00a86b;
+        }
+        
+        /* Footer contacto */
+        .footer-contact-restored {
+            background: rgba(255,255,255,0.07);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin: 28px 0;
+        }
+        
+        .footer-contact-restored h3 {
+            color: #f6d24a;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+        
+        .footer-form-restored {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .footer-form-restored input,
+        .footer-form-restored textarea {
+            width: 100%;
+            background: rgba(15,82,76,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        
+        .footer-form-restored input::placeholder,
+        .footer-form-restored textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .btn-send-restored {
+            background: #f6d24a;
+            color: #083431;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .btn-send-restored:hover {
+            background: #f0c619;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quick-info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+       <div class="header-left">
+            <button id="sidebarToggle" aria-label="Toggle sidebar" class="sidebar-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <img src="logo.png.png" alt="RuralBus" class="header-logo">
+        </div>
+
+        <nav class="header-menu">
+            <a href="#">Quiénes Somos</a>
+            <a href="#">Servicios</a>
+            <a href="#">Nuestras Rutas</a>
+            <a href="#">Preguntas Frecuentes</a>
+            <a href="#">Contacto</a>
+        </nav>
+
         <div class="profile-dropdown" id="profileMenu">
             <button class="btn-profile" id="profileToggle">
-                <img src="https://c0.klipartz.com/pngpicture/81/570/gratis-png-perfil-logo-iconos-de-computadora-usuario-usuario.png" alt="Usuario" class="profile-avatar" />
-                <span class="perfil-nombre">Mi Perfil</span>
+                <div class="profile-avatar-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="perfil-nombre">Usuario</span>
                 <i class="fas fa-caret-down"></i>
             </button>
-
             <div class="profile-dropdown-content" id="profileDropdown">
-              
-                <div class="dropdown-divider"></div>
-                <a href="#" class="logout-link" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                <a href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Cerrar Sesión
+                </a>
             </div>
         </div>
     </header>
 
-    <main class="main-content">
-        <section class="module-header">
-            <h2>Bienvenido al Centro de Gestión 👋</h2>
-            <p>Aquí puede administrar todas las operaciones de transporte 🚌</p>
+    <main class="dashboard-layout">
+        <aside class="sidebar-rural">
+            <a href="#" class="active">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+            <a href="gestion-reservas.html">
+                <i class="fas fa-users"></i>
+                Reservas y Clientes
+            </a>
+            <a href="emitir-boletos.html">
+                <i class="fas fa-qrcode"></i>
+                Boletos Electrónicos
+            </a>
+            <a href="capacidad-tiempo-real.html" class="admin-only">
+                <i class="fas fa-bus"></i>
+                Capacidad en Tiempo Real
+            </a>
+            <a href="reportes-analisis.html" class="admin-only">
+                <i class="fas fa-chart-line"></i>
+                Reportes Avanzados
+            </a>
+            <a href="pago-digital.html">
+                <i class="fas fa-credit-card"></i>
+                Ventas y Pagos
+            </a>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <section class="dashboard-content">
+
+            <!-- BANNER DE BIENVENIDA -->
+            <div class="welcome-banner">
+                <div>
+                    <h1>¡Bienvenido a RuralBus!</h1>
+                    <p>Conectamos Nicaragua con transporte seguro, puntual y accesible. Reserva tu viaje en minutos.</p>
+                </div>
+            </div>
+
+            <!-- QUICK INFO CARDS - INFORMACIÓN DE RURALBUS -->
+            <div class="quick-info-grid">
+                <div class="quick-info-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h4>Más de 50 rutas</h4>
+                    <p>Conexión entre 15 departamentos de Nicaragua</p>
+                </div>
+                <div class="quick-info-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Seguridad 24/7</h4>
+                    <p>Flota monitoreada y conductores certificados</p>
+                </div>
+                <div class="quick-info-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Puntualidad garantizada</h4>
+                    <p>Salidas a horario en todas las terminales</p>
+                </div>
+            </div>
+
+            <div class="top-grid">
+                <!-- CARRUSEL -->
+                <div class="slider-box">
+                    <img id="sliderImage" src="" alt="Slider">
+                    <div class="slider-overlay"></div>
+                    <div class="slider-text">
+                        <h2 id="sliderTitle">Managua</h2>
+                        <p id="sliderDescription">Centro económico y principal terminal terrestre.</p>
+                    </div>
+                    <button class="slider-control prev">‹</button>
+                    <button class="slider-control next">›</button>
+                </div>
+
+                <!-- MONITOREO DE FLOTA -->
+                <div class="monitor-box-new">
+                    <h2><i class="fas fa-map-marked-alt"></i> Monitoreo de Flota Activa</h2>
+                    
+                    <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-city"></i> Managua
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">18 unidades activas</span>
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-mountain"></i> Estelí
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">12 unidades activas</span>
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-landmark"></i> León
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">15 unidades activas</span>
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-tree"></i> Río Blanco
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">8 unidades activas</span>
+                        </div>
+                    </div>
+                    
+                     <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-landmark"></i>Ayapal
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">9 unidades activas</span>
+                        </div>
+                    </div>
+                    <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-landmark"></i> Chinandega
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">5 unidades activas</span>
+                        </div>
+                    </div>
+                    <div class="monitor-item-new">
+                        <div class="monitor-city">
+                            <i class="fas fa-landmark"></i> Granada
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span class="status-text">2 unidades activas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESTINOS Y HORARIOS -->
+            <div class="routes-card">
+                <h2>Destinos Principales y Horarios</h2>
+
+                <div class="route-item">
+                    <div class="route-left">Managua → Granada<div class="route-times">06:30, 10:45, 14:00</div></div>
+                </div>
+
+                <div class="route-item">
+                    <div class="route-left">Estelí → Managua<div class="route-times">07:15, 12:00, 18:30</div></div>
+                </div>
+
+                <div class="route-item">
+                    <div class="route-left">León → Chinandega<div class="route-times">05:50, 09:20, 16:00</div></div>
+                </div>
+                
+                <div class="route-item">
+                    <div class="route-left">Managua → Río Blanco<div class="route-times">05:30, 10:00, 15:00</div></div>
+                </div>
+                
+                <div class="route-item">
+                    <div class="route-left">Jinotega → Ayapal<div class="route-times">07:00, 9:45, 13:00</div></div>
+                </div>
+            </div>
+
         </section>
 
-      <div class="metrics-grid">
-        <a href="gestion-reservas.html" class="metric-card module-link color-light-orange">
-            <i class="fas fa-ticket-alt module-icon-reservas"></i>
-            <h3> Gestión de Reservas y Llamadas </h3>
-            <p>Aquí puede crear, buscar y gestionar todas las reservas de pasajes. 📅 Organice sus viajes.</p>
-        </a>
+        <!-- PANEL DERECHO INFORMATIVO -->
+        <aside class="stats-panel">
+            <div class="stat-card">
+                <h3><i class="fas fa-compass"></i> ¿Cómo funciona RuralBus?</h3>
+                <p>Reserva tu pasaje en línea, elige tu asiento y recibe tu boleto digital con QR.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-ticket-alt"></i> Boletos 100% digitales</li>
+                    <li><i class="fas fa-qrcode"></i> Escanea tu QR al abordar</li>
+                    <li><i class="fas fa-mobile-alt"></i> Viaja sin papel, todo en tu celular</li>
+                </ul>
+            </div>
 
-        <a href="emitir-boletos.html" class="metric-card module-link color-light-blue">
-            <i class="fas fa-qrcode module-icon-boletos"></i>
-            <h3> Emitir Boletos Electrónicos 📲</h3>
-            <p>Genera boletos con código QR para una verificación de check-in rápida. ✅</p>
-        </a>
+            <div class="stat-card">
+                <h3><i class="fas fa-star"></i> Ventajas de viajar con nosotros</h3>
+                <p><strong>Puntualidad garantizada</strong> — Salidas a horario desde todas las terminales.</p>
+                <p><strong>Seguridad certificada</strong> — Flota monitoreada 24/7.</p>
+                <p><strong>Máxima comodidad</strong> — Asientos reclinables con espacio para piernas.</p>
+                <p><strong>WiFi gratuito</strong> y <strong>cargadores USB</strong> en todas las unidades.</p>
+            </div>
 
-        <a href="capacidad-tiempo-real.html" class="metric-card module-link color-light-yellow">
-            <i class="fas fa-bus module-icon-capacidad"></i>
-            <h3> Capacidad en Tiempo Real </h3>
-            <p>Monitorea asientos disponibles y ocupados por ruta. 🗺️</p>
-        </a>
+            <div class="info-card passenger-services">
+                <h3><i class="fas fa-graduation-cap"></i> Tarifas especiales</h3>
+                <p><strong>Estudiantes:</strong> 30% de descuento con carnet vigente.</p>
+                <p><strong>Adultos mayores:</strong> 25% de descuento (60+ años).</p>
+                <p><strong>Niños menores de 5 años:</strong> Viajan gratis (un niño por adulto).</p>
+                <p><strong>Viajes frecuentes:</strong> Programa de puntos y beneficios exclusivos.</p>
+            </div>
 
-        <a href="reportes-analisis.html" class="metric-card module-link color-light-green">
-            <i class="fas fa-chart-line module-icon-reportes"></i>
-            <h3> Reportes y Análisis Financiero 💰</h3>
-            <p>Consolidado de ingresos, ventas y métricas clave (📊) para la toma de decisiones. 💡</p>
-        </a>
-
-        <a href="pago-digital.html" class="metric-card module-link color-light-purple">
-            <i class="fas fa-credit-card module-icon-pagos"></i>
-            <h3> Pago Digital y Transacciones Rápido ⚡</h3>
-            <p>Gestiona y procesa pagos electrónicos de pasajes. 💵</p>
-        </a>
-    </div>
-
+            
+        </aside>
     </main>
 
-    <footer class="main-footer">
-      <p>RuralBus. Todos los derechos reservados © </p>
-      <div class="social-links">
-        <a href="https://web.whatsapp.com/" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Whatsapp" width="30">
-        </a>
-        <a href="https://workspace.google.com/intl/es-419/gmail/" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail" width="30">
-        </a>
-        <a href="https://facebook.com/tuusuario" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" width="30">
-        </a>
-      </div>
+    <!-- FOOTER COMPLETO CON FORMULARIO DE CONTACTO -->
+    <footer class="footer-rural">
+        <div class="footer-top">
+            <div>
+                <h2>RuralBus</h2>
+                <p>Conectando comunidades rurales de Nicaragua con transporte seguro, puntual y accesible.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3>COMPAÑÍA</h3>
+                <ul>
+                    <li><a href="#">Quiénes Somos</a></li>
+                    <li><a href="#">Nuestras Rutas</a></li>
+                    <li><a href="#">Flota de Buses</a></li>
+                    <li><a href="#">Trabaja con Nosotros</a></li>
+                    <li><a href="#">Alianzas Estratégicas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>PASAJEROS</h3>
+                <ul>
+                    <li><a href="#">Cómo comprar tu boleto</a></li>
+                    <li><a href="#">Políticas de equipaje</a></li>
+                    <li><a href="#">Tarifas especiales</a></li>
+                    <li><a href="#">Preguntas frecuentes</a></li>
+                    <li><a href="#">Términos y condiciones</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>CONTACTO Y SOPORTE</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Terminal Roberto Huembes, Managua, Nicaragua</li>
+                    <li><i class="fas fa-phone"></i> +505 2278-1234</li>
+                    <li><i class="fas fa-envelope"></i> contacto@ruralbus.ni</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FORMULARIO DE CONTACTO -->
+        <div class="footer-contact-restored">
+            <h3>Envíanos tu Mensaje</h3>
+            <form class="footer-form-restored" id="footerContactForm">
+                <input type="text" placeholder="Tu nombre" required>
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <textarea placeholder="Tu mensaje..." rows="4" required></textarea>
+                <button type="submit" class="btn-send-restored">Enviar Mensaje</button>
+            </form>
+        </div>
+
+        <div class="footer-bottom">
+            <div>
+                <h3>PRINCIPALES RUTAS</h3>
+                <ul>
+                    <li>Managua → Granada</li>
+                    <li>Managua → Estelí</li>
+                    <li>Managua → Rivas</li>
+                    <li>León → Chinandega</li>
+                    <li>Jinotega → Ayapal</li>
+                </ul>
+            </div>
+            <div>
+                <h3>PRINCIPALES CIUDADES</h3>
+                <ul>
+                    <li>Managua</li>
+                    <li>Granada</li>
+                    <li>León</li>
+                    <li>Estelí</li>
+                    <li>Matagalpa</li>
+                    <li>Jinotega</li>
+                </ul>
+            </div>
+  <div>
+    <h3>ACEPTAMOS</h3>
+    <div class="payment-methods">
+        <!-- Visa: letra VISA azul -->
+        <div class="payment-visa">VISA</div>
+        
+        <!-- Mastercard: círculos rojo y amarillo superpuestos -->
+        <div class="payment-mastercard">
+            <div class="mc-red"></div>
+            <div class="mc-yellow"></div>
+        </div>
+        
+        <!-- Dólar: símbolo $ verde -->
+        <div class="payment-dollar">$</div>
+    </div>
+</div>
+        </div>
+
+        <div class="footer-legal">
+            <p>&copy; 2026 RuralBus Nicaragua — Todos los derechos reservados</p>
+            <ul class="legal-links">
+                <li><a href="#">Términos de uso</a></li>
+                <li><a href="#">Privacidad</a></li>
+                <li><a href="#">Reembolsos</a></li>
+                <li><a href="#">Centro de Ayuda</a></li>
+            </ul>
+        </div>
     </footer>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const slides = [
+            { nombre: "Managua", texto: "Capital de Nicaragua.", img: "https://www.visitcentroamerica.com/wp-content/uploads/2025/04/Managua-Nicaragua-Centroamerica-03.webp" },
+            { nombre: "Granada", texto: "Ciudad colonial.", img: "https://www.liveandinvestoverseas.com/wp-content/uploads/2026/05/a-typical-scene-in-granada-in-nicaragua.webp" },
+            { nombre: "León", texto: "Catedral y cultura.", img: "https://media.istockphoto.com/id/1271425361/es/foto/estatua-de-m%C3%A1ximo-jerez-y-catedral-de-asunci%C3%B3n-le%C3%B3n-nicaragua.jpg?s=612x612&w=0&k=20&c=xFppi7EsbgYaxfzqIn2K_bGt4zkt27IRlKR3ISzCvcU=" },
+            { nombre: "Matagalpa", texto: "Tierra del café y las montañas verdes.", img: "https://i0.wp.com/passporterapp.com/es/blog/wp-content/uploads/2024/07/que-ver-en-matagalpa-1.jpg?w=1000&ssl=1" }
+        ];
+        
+        let actual = 0;
+        const sliderImage = document.getElementById('sliderImage');
+        const sliderTitle = document.getElementById('sliderTitle');
+        const sliderDescription = document.getElementById('sliderDescription');
 
-  
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
+        const actualizarSlider = () => {
+            if (!sliderImage || !sliderTitle || !sliderDescription) return;
+            const slide = slides[actual];
+            sliderImage.src = slide.img;
+            sliderImage.alt = slide.nombre;
+            sliderTitle.textContent = slide.nombre;
+            sliderDescription.textContent = slide.texto;
+        };
+
+        const avanzarSlide = () => {
+            actual = (actual + 1) % slides.length;
+            actualizarSlider();
+        };
+
+        actualizarSlider();
+        
+        const token = localStorage.getItem('token');
         const usuarioActivo = localStorage.getItem('usuarioActivo');
         const perfilNombre = document.querySelector('.perfil-nombre');
 
-        // 1. RESTRICCIÓN DE ACCESO INMEDIATA (La guardia de la página)
-        // Si NO hay usuario activo, redirige a index.html y ELIMINA esta página del historial.
-        if (!usuarioActivo) {
-            // **CLAVE:** usa replace() para que el botón de retroceso no pueda volver a esta página.
+        if (!token) {
             window.location.replace("index.html");
-            return; // Detiene la ejecución del resto del script.
+            return;
         }
 
-        // --- Resto de la lógica (Solo se ejecuta si hay usuarioActivo) ---
-
-        // 2. CONFIGURACIÓN DEL NOMBRE
         if (perfilNombre) {
-            perfilNombre.textContent = usuarioActivo.toUpperCase();
+            const provisional = (usuarioActivo && usuarioActivo !== 'undefined') ? usuarioActivo : 'Usuario';
+            perfilNombre.textContent = String(provisional).toUpperCase();
         }
 
-        // 3. CIERRE DE SESIÓN (Logout)
+        try {
+            const response = await fetch('http://localhost:4000/perfil', {
+                headers: { authorization: token }
+            });
+
+            if (!response.ok) {
+                localStorage.removeItem('usuarioActivo');
+                localStorage.removeItem('token');
+                localStorage.removeItem('rol');
+                window.location.replace('index.html');
+                return;
+            }
+
+            const data = await response.json();
+            if (perfilNombre) {
+                const backendName = data.username ?? data.user ?? data.nombre ?? data.name ?? usuarioActivo ?? 'Usuario';
+                perfilNombre.textContent = String(backendName).toUpperCase();
+            }
+
+            const adminModules = document.querySelectorAll('.admin-only');
+            if (data.rol === 'admin') {
+                adminModules.forEach(module => {
+                    module.classList.remove('admin-only');
+                    module.style.display = '';
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
         document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('usuarioActivo');
-            // **CLAVE:** usa replace() para que el botón de retroceso no pueda volver aquí.
-            window.location.replace('index.html'); 
+            localStorage.removeItem('token');
+            localStorage.removeItem('rol');
+            window.location.replace('index.html');document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('usuarioActivo');
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    window.location.replace('index.html');
+});
         });
 
-        // 4. LÓGICA DEL TOGGLE DEL MENÚ (Se mantiene)
         const profileToggle = document.getElementById("profileToggle");
-        const profileMenu = document.getElementById("profileMenu"); 
-        
+        const profileMenu = document.getElementById("profileMenu");
+
         if (profileToggle && profileMenu) {
             profileToggle.addEventListener('click', function(e) {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 profileMenu.classList.toggle("show");
             });
 
-            document.addEventListener("click", function (e) {
+            document.addEventListener("click", function(e) {
                 if (!profileMenu.contains(e.target)) {
                     profileMenu.classList.remove("show");
                 }
             });
         }
+
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const bodyEl = document.body;
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                bodyEl.classList.toggle('sidebar-collapsed');
+            });
+        }
+
+        const prevBtn = document.querySelector('.slider-control.prev');
+        const nextBtn = document.querySelector('.slider-control.next');
+        let intervalId = null;
+
+        const startAuto = () => {
+            stopAuto();
+            intervalId = setInterval(avanzarSlide, 5000);
+        };
+
+        const stopAuto = () => {
+            if (intervalId) clearInterval(intervalId);
+        };
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                actual = (actual - 1 + slides.length) % slides.length;
+                actualizarSlider();
+                startAuto();
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                avanzarSlide();
+                startAuto();
+            });
+        }
+
+        const sliderBox = document.querySelector('.slider-box');
+        if (sliderBox) {
+            sliderBox.addEventListener('mouseenter', stopAuto);
+            sliderBox.addEventListener('mouseleave', startAuto);
+        }
+
+        startAuto();
+
+        const footerForm = document.getElementById('footerContactForm');
+        if (footerForm) {
+            footerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Mensaje enviado. Pronto nos pondremos en contacto contigo.');
+                footerForm.reset();
+            });
+        }
     });
-    
-</script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    const usuarioActivo = localStorage.getItem('usuarioActivo');
+    const token = localStorage.getItem('token');
+
+    // Si entran directo sin loguearse, los saca al index
+    if (!usuarioActivo || !token) {
+        window.location.href = 'index.html';
+        return;
+    }
+
+    try {
+        // Validamos el token contra el endpoint de perfil del backend
+        const res = await fetch('http://localhost:4000/perfil', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` } // Enviamos el JWT manualmente
+        });
+
+        if (!res.ok) {
+            // Si el backend dice que el token expiró o es falso, limpia y expulsa
+            localStorage.clear();
+            window.location.href = 'index.html';
+            return;
+        }
+
+        const datos = await res.json();
+        
+        // Coloca tu nombre en la esquina superior del panel
+        const nombrePantalla = document.getElementById('nombreUsuarioPantalla');
+        if (nombrePantalla) nombrePantalla.textContent = datos.usuario;
+
+    } catch (err) {
+        console.error("Error de validación:", err);
+    }
+});
+
+    </script>
+</body>
+</html>

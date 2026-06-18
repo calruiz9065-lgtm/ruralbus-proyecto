@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante Imprimible - RuralBus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: #f5f7f8; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #ffffff; border-radius: 14px; box-shadow: 0 16px 32px rgba(0,0,0,0.09); padding: 40px; }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #034d47; padding-bottom: 20px; }
+        .header h1 { color: #034d47; font-size: 28px; margin-bottom: 5px; }
+        .header p { color: #5f6e6c; font-size: 14px; }
+        .company-badge { display: none; }
+        .header-logo { display:inline-block; margin-bottom:12px; }
+        .header-logo img { height:60px; width:auto; display:block; margin:0 auto 8px; }
+        .section { margin-bottom: 24px; }
+        .section-title { font-size: 14px; font-weight: 700; color: #034d47; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 12px; }
+        .row.full { grid-template-columns: 1fr; }
+        .field { }
+        .field label { display: block; font-size: 12px; color: #7a8a88; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
+        .field value { display: block; font-size: 16px; color: #1a3a37; font-weight: 500; }
+        .divider { border: none; border-top: 1px solid #e0e7e7; margin: 24px 0; }
+        .total-section { background: #f2f8f7; padding: 20px; border-radius: 10px; margin-top: 24px; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 16px; }
+        .total-row strong { font-weight: 600; color: #1a3a37; }
+        .total-amount { font-size: 20px; font-weight: 700; color: #034d47; margin-top: 12px; border-top: 1px solid #d4e0e0; padding-top: 12px; }
+        .footer { text-align: center; margin-top: 30px; font-size: 13px; color: #7a8a88; }
+        .error { text-align: center; padding: 40px; }
+        .error p { color: #d9534f; font-size: 16px; margin-bottom: 20px; }
+        .error a { color: #034d47; text-decoration: none; font-weight: 600; }
+        @media print {
+            body { background: #ffffff; padding: 0; }
+            .container { box-shadow: none; margin: 0; border-radius: 0; }
+            .footer { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo"><img src="logo.png.png" alt="RuralBus Logo"></div>
+            <h1>Comprobante de Pago</h1>
+            <p>Documento válido para el pasajero</p>
+        </div>
+
+        <div id="content">
+            <div class="error">
+                <p>Cargando comprobante...</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Para imprimir o guardar como PDF, usa Ctrl+P (o Cmd+P en Mac) o el menú de tu navegador</p>
+        </div>
+    </div>
+
+    <script>
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        function renderInvoice(inv) {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="section">
+                    <div class="section-title">Información del Comprobante</div>
+                    <div class="row">
+                        <div class="field">
+                            <label>Factura N°</label>
+                            <value>${inv.invoiceNumber || 'N/A'}</value>
+                        </div>
+                        <div class="field">
+                            <label>Fecha de Emisión</label>
+                            <value>${inv.issueDate || 'N/A'}</value>
+                        </div>
+                    </div>
+                    <div class="row full">
+                        <div class="field">
+                            <label>Vigencia del Boleto</label>
+                            <value>${inv.expiryDate || 'N/A'}</value>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="section">
+                    <div class="section-title">Datos del Pasajero</div>
+                    <div class="row">
+                        <div class="field">
+                            <label>Nombre</label>
+                            <value>${inv.passenger || 'N/A'}</value>
+                        </div>
+                        <div class="field">
+                            <label>DNI</label>
+                            <value>${inv.dni || 'N/A'}</value>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="section">
+                    <div class="section-title">Detalles del Viaje</div>
+                    <div class="row">
+                        <div class="field">
+                            <label>Ruta</label>
+                            <value>${inv.route || 'N/A'}</value>
+                        </div>
+                        <div class="field">
+                            <label>Asiento</label>
+                            <value>${inv.seat || 'N/A'}</value>
+                        </div>
+                    </div>
+                    <div class="row full">
+                        <div class="field">
+                            <label>Compañía</label>
+                            <value>${inv.company || 'N/A'}</value>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="total-section">
+                    <div class="section-title">Resumen de Pago</div>
+                    <div class="total-row">
+                        <span>Precio del Boleto:</span>
+                        <strong>C$ ${(inv.price || 0).toFixed(2)}</strong>
+                    </div>
+                    <div class="total-row">
+                        <span>IVA (13%):</span>
+                        <strong>C$ ${(inv.taxAmount || 0).toFixed(2)}</strong>
+                    </div>
+                    <div class="total-amount">
+                        Total a Pagar: C$ ${(inv.total || 0).toFixed(2)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderError(msg) {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="error">
+                    <p>${msg}</p>
+                    <a href="emitir-boletos.html">← Volver a emisión de boletos</a>
+                </div>
+            `;
+        }
+
+        // Obtener ID de la factura desde query params
+        const invoiceId = getQueryParam('id');
+        if (!invoiceId) {
+            renderError('No se especificó número de factura. Por favor, escanea el QR nuevamente.');
+        } else {
+            // Búsqueda robusta en localStorage con prioridad:
+            // 1) clave exacta (si corresponde y parsea)
+            // 2) buscar coincidencia por `dni` (prioridad alta)
+            // 3) buscar coincidencia por `invoiceNumber` (fallback)
+            let raw = localStorage.getItem(invoiceId);
+            let parsed = null;
+            if (raw) {
+                try { parsed = JSON.parse(raw); } catch (e) { parsed = null; }
+            }
+
+            let found = null;
+            if (parsed && typeof parsed === 'object') {
+                // Si la clave directa corresponde al objeto esperado, úsalo cuando coincida el dni o invoiceNumber
+                if (String(parsed.dni || '').trim() === String(invoiceId).trim() ||
+                    String(parsed.invoiceNumber || '').trim() === String(invoiceId).trim()) {
+                    found = parsed;
+                }
+            }
+
+            if (!found) {
+                let dniMatch = null;
+                let invMatch = null;
+                for (const key of Object.keys(localStorage)) {
+                    try {
+                        const val = JSON.parse(localStorage.getItem(key));
+                        if (val && typeof val === 'object') {
+                            if (String(val.dni || '').trim() === String(invoiceId).trim()) {
+                                dniMatch = val;
+                                break; // prioridad: usamos la primera coincidencia por dni
+                            }
+                            if (!invMatch && String(val.invoiceNumber || '').trim() === String(invoiceId).trim()) {
+                                invMatch = val;
+                            }
+                        }
+                    } catch (e) {
+                        // ignorar claves no JSON
+                    }
+                }
+
+                found = dniMatch || invMatch || null;
+            }
+
+            if (!found) {
+                renderError(`Comprobante no encontrado. Asegúrate de generar un nuevo boleto desde emitir-boletos.html`);
+            } else {
+                try {
+                    renderInvoice(found);
+                    // Auto-print en desktop después de cargar
+                    setTimeout(() => window.print(), 500);
+                } catch (err) {
+                    renderError('Error al cargar el comprobante. Los datos no son válidos.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

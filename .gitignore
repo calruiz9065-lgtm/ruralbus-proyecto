@@ -8,6 +8,6 @@ coverage/
 generated/
 
 npm-debug.log
-
+.vscode/
 .DS_Store
 Thumbs.db
